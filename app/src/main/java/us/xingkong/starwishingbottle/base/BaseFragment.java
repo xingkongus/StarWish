@@ -43,7 +43,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
         mUnbinder = ButterKnife.bind(this, root);
 
         init(savedInstanceState);
-        Log.d("!!!!!!!! ","!!!!!!!!!!!!!");
         return root;
     }
 

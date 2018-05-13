@@ -14,7 +14,7 @@ import us.xingkong.starwishingbottle.base.BaseFragment;
 public class WishListFrament extends BaseFragment<MainContract.Presenter> implements MainContract.View {
     @Override
     protected void init(Bundle savedInstanceState) {
-        Log.d("start", "init:2");
+
     }
 
     @Override

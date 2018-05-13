@@ -41,7 +41,6 @@ public class MyWishFragment extends BaseFragment<MainContract.Presenter> impleme
         adapter = new RecyclerAdapter(messages);
         mWishList.setAdapter(adapter);
 
-        Log.d("start", "init:1 ");
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
