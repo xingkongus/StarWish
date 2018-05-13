@@ -3,15 +3,15 @@ package us.xingkong.starwishingbottle.module.first;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 
-import com.youth.banner.Banner;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseFragment;
 import us.xingkong.starwishingbottle.module.login.LoginActivity;
@@ -29,13 +29,17 @@ public class FirstFragment extends BaseFragment<FirstContract.Presenter>
     AppCompatButton login;
     @BindView(R.id.bt_regist)
     AppCompatButton register;
-
-    Banner banner;
+    @BindView(R.id.back_ground)
+    AppCompatImageView background;
+//
+//    Banner banner;
 
     List<Integer> list;
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        Glide.with(getFragmentContext()).
+                load(R.drawable.blowball_dandelion_dandelion_seed_54300).into(background);
         initData();
     }
 
@@ -50,15 +54,16 @@ public class FirstFragment extends BaseFragment<FirstContract.Presenter>
             list.add(imageResID);
         }
 
-        banner = root.findViewById(R.id.banner);
-        //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        banner.setImages(list);
-        //设置自动轮播，默认为true
-        banner.isAutoPlay(false);
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
+
+//        banner = root.findViewById(R.id.banner);
+//        //设置图片加载器
+//        banner.setImageLoader(new GlideImageLoader());
+//        //设置图片集合
+//        banner.setImages(list);
+//        //设置自动轮播，默认为true
+//        banner.isAutoPlay(false);
+//        //banner设置方法全部调用完毕时最后调用
+//        banner.start();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

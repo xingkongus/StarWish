@@ -127,4 +127,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="pls_conf_code">请确认密码</string>
 </resources>

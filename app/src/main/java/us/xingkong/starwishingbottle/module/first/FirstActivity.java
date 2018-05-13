@@ -18,16 +18,10 @@ import us.xingkong.starwishingbottle.util.FragmentUtil;
 public class FirstActivity extends BaseActivity<FirstContract.Presenter> implements FirstContract.View {
     @Override
     protected void initEvent(Bundle savedInstanceState) {
-        if (BmobUser.getCurrentUser() != null)
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                startActivity(new Intent(FirstActivity.this, MainActivity.class));
-                finish();
-            }
-        else {
+        if (BmobUser.getCurrentUser() != null) {
+            startActivity(new Intent(FirstActivity.this, MainActivity.class));
+            finish();
+        } else {
             FragmentUtil.addFragmentToContainer(getSupportFragmentManager(), new FirstFragment(), R.id.content);
         }
     }
