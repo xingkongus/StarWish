@@ -1,10 +1,14 @@
 package us.xingkong.starwishingbottle.module.main;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +42,7 @@ public class MyWishFragment extends BaseFragment<MainContract.Presenter> impleme
         messages = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mWishList.setLayoutManager(layoutManager);
-        adapter = new RecyclerAdapter(messages);
+        adapter = new RecyclerAdapter(messages,this.getContext());
         mWishList.setAdapter(adapter);
 
         Log.d("start", "init:1 ");
@@ -49,13 +53,16 @@ public class MyWishFragment extends BaseFragment<MainContract.Presenter> impleme
                 mPresenter.loadMyBottles(new FindListener<Message>() {
                     @Override
                     public void done(List<Message> list, BmobException e) {
-                        if (e!=null){
+                        if (e != null) {
                             e.printStackTrace();
-                        }else {
+                        } else {
                             messages = list;
+                            adapter.setMessages(list);
+                            for(Message msg : messages)
+                                System.out.println(msg.getContent());
                             adapter.notifyDataSetChanged();
                         }
-
+                        refreshLayout.setRefreshing(false);
                     }
                 });
             }
