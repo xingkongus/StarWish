@@ -57,8 +57,6 @@ public class MyWishFragment extends BaseFragment<MainContract.Presenter> impleme
                         } else {
                             messages = list;
                             adapter.setMessages(list);
-                            for(Message msg : messages)
-                                System.out.println(msg.getContent());
                             adapter.notifyDataSetChanged();
                         }
                         refreshLayout.setRefreshing(false);

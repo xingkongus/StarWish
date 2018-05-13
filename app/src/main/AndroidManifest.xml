@@ -27,7 +27,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".module.main.MainActivity"
-            android:theme="@style/MainActivityTheme"></activity>
+            android:theme="@style/MainActivityTheme" />
         <activity
             android:name=".module.login.LoginActivity"
             android:theme="@style/FullscreenTheme" />
@@ -47,12 +47,14 @@
             android:name=".module.editmsg.EditMsgActivity"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".module.myinfo.MyInfoActivity"
+            android:name=".module.setting.SettingActivity"
             android:theme="@style/MainActivityTheme" />
         <activity
             android:name=".module.main.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".module.info.InfoActivity"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context=".module.myinfo.MyInfoActivity">
+    tools:context=".module.setting.SettingActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -60,53 +60,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/activity_horizontal_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin">
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/username"
-                            android:layout_weight="2"/>
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:id="@+id/tv_username"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:layout_weight="8"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin">
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="@string/isGraduate"
-                            android:gravity="center"/>
-
-                        <com.suke.widget.SwitchButton
-                            android:id="@+id/bt_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
                     <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/bt_change_pass"
+                        android:id="@+id/bt_change_userinfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/change_pass"
+                        android:text="@string/change_userinfo"
                         android:background="@android:color/transparent"/>
 
                 </LinearLayout>
@@ -128,6 +86,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/about"
+                        android:background="@android:color/transparent"/>
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/bt_check_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/check_update"
                         android:background="@android:color/transparent"/>
 
                     <android.support.v7.widget.AppCompatButton

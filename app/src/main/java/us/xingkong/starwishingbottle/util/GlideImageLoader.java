@@ -7,6 +7,10 @@ import android.os.Build;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -15,6 +19,18 @@ import com.youth.banner.loader.ImageLoader;
  * Email：sealynndev@gmail.com
  */
 public class GlideImageLoader extends ImageLoader {
+
+    /**
+     * Glide圆角Builder
+     * @param builder
+     * @return
+     */
+    public static RequestBuilder Circle(RequestBuilder builder){
+        RequestOptions rq = new RequestOptions();
+        rq.transform(new CircleCrop());
+        return builder.apply(rq);
+    }
+
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         /**

@@ -1,4 +1,4 @@
-package us.xingkong.starwishingbottle.module.myinfo;
+package us.xingkong.starwishingbottle.module.setting;
 
 import us.xingkong.starwishingbottle.base.BasePresenter;
 import us.xingkong.starwishingbottle.base.BaseView;
@@ -8,7 +8,7 @@ import us.xingkong.starwishingbottle.base.BaseView;
  * <p>
  * Email：sealynndev@gmail.com
  */
-class MyInfoContract {
+class SettingContract {
 
     interface View extends BaseView<Presenter>{
     }

@@ -33,6 +33,7 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
     public void loadMyBottles(FindListener<Message> listener) {
         BmobQuery<Message> query = new BmobQuery<>();
         query.addWhereEqualTo("user", User.getCurrentUser());
+        query.order("-createdAt");
         query.findObjects(listener);
     }
 }

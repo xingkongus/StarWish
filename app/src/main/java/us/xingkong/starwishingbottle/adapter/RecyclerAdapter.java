@@ -10,17 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListener;
 import us.xingkong.starwishingbottle.R;
+import us.xingkong.starwishingbottle.module.info.InfoActivity;
+import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.Message;
-
-import static android.support.constraint.Constraints.TAG;
+import xyz.sealynn.bmobmodel.model.User;
 
 /**
  * Created by SeaLynn0 on 2018/5/13 18:38
@@ -51,12 +56,52 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Message message = messages.get(position);
-        Log.d(TAG, "++++++++++++++++" + message.getContent());
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final Message message = messages.get(position);
+
         holder.preview.setText(message.getContent());
         if (message.getPicture() != null)
             Glide.with(context).load(message.getPicture().getUrl()).into(holder.picture);
+
+        BmobQuery<User> q = new BmobQuery<>();
+
+        q.getObject(message.getUser().getObjectId(), new QueryListener<User>() {
+            @Override
+            public void done(User user, BmobException e) {
+                if(e != null){
+                    e.printStackTrace();
+                    Log.d(this.toString(),e.toString());
+                }else{
+                    holder.user.setText(user.getUsername());
+
+                    if (user != null && user.getAvatar() != null)
+
+                        GlideImageLoader.Circle(Glide.with(context).load(user.getAvatar().getUrl())).
+                            into(holder.headPic);
+                }
+            }
+        });
+
+        if(message.getFinished() == null)
+            holder.isFinished.setVisibility(View.GONE);
+        if(message.getPublished())
+            holder.isPrivate.setVisibility(View.GONE);
+
+        holder.date.setText(message.getCreatedAt());
+        holder.userinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InfoActivity.showUserInfo(context,message.getUser());
+            }
+        });
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     @Override
@@ -65,18 +110,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        //        @BindView(R.id.card_view)
+
         CardView cardView;
-        //        @BindView(R.id.picture)
-        AppCompatImageView picture;
-        //        @BindView(R.id.preview)
-        AppCompatTextView preview;
+        AppCompatImageView picture,headPic,isFinished,isPrivate;
+        AppCompatTextView preview,user,date;
+        LinearLayout userinfo;
 
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.card_view);
             preview = itemView.findViewById(R.id.preview);
+            user = itemView.findViewById(R.id.user);
+            date = itemView.findViewById(R.id.date);
+
             picture = itemView.findViewById(R.id.picture);
+            headPic = itemView.findViewById(R.id.headPic);
+            isFinished = itemView.findViewById(R.id.isfinisher);
+            isPrivate = itemView.findViewById(R.id.isprivate);
+
+            userinfo = itemView.findViewById(R.id.part_user);
         }
     }
 }

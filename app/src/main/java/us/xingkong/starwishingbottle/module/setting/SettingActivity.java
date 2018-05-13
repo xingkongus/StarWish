@@ -1,4 +1,4 @@
-package us.xingkong.starwishingbottle.module.myinfo;
+package us.xingkong.starwishingbottle.module.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,33 +6,37 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.suke.widget.SwitchButton;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.module.first.FirstActivity;
+import xyz.sealynn.bmobmodel.model.User;
 
 /**
  * Created by SeaLynn0 on 2018/5/7 20:57
  * <p>
  * Email：sealynndev@gmail.com
  */
-public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> implements MyInfoContract.View {
-    @BindView(R.id.bt_switch)
-    SwitchButton switch_isGraduate;
-    @BindView(R.id.tv_username)
-    AppCompatTextView username;
-    @BindView(R.id.bt_change_pass)
+public class SettingActivity extends BaseActivity<SettingContract.Presenter> implements SettingContract.View {
+
+
+    @BindView(R.id.bt_change_userinfo)
     AppCompatButton change_password;
+    @BindView(R.id.head_image)
+    AppCompatImageView headImg;
     @BindView(R.id.bt_logout)
     AppCompatButton logout;
     @BindView(R.id.collapsing_toolbar)
@@ -48,7 +52,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(MyInfoActivity.this)
+                new MaterialDialog.Builder(SettingActivity.this)
                         .title(R.string.islogout)
                         .positiveText(R.string.confirm)
                         .negativeText(R.string.disagree)
@@ -56,7 +60,7 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 BmobUser.logOut();
-                                startActivity(new Intent(MyInfoActivity.this, FirstActivity.class));
+                                startActivity(new Intent(SettingActivity.this, FirstActivity.class));
                                 ActivityCollector.finishAll();
                             }
                         })
@@ -70,29 +74,19 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
 
             }
         });
-        switch_isGraduate.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, final boolean isChecked) {
-                new MaterialDialog.Builder(MyInfoActivity.this)
-                        .title(R.string.warming)
-                        .content(R.string.warning_message)
-                        .positiveText(R.string.confirm)
-                        .negativeText(R.string.disagree)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            }
-        });
+        User user = User.getCurrentUser(User.class);
+        if(user != null) {
+            collapsingToolbarLayout.setTitle(user.getUsername());
+            if(user.getAvatar() != null)
+                Glide.with(this).load(user.getAvatar().getUrl())
+                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(13)))
+                        .transition(new DrawableTransitionOptions().crossFade())
+                        .into(headImg);
+
+        }
+
+
     }
 
     @Override
@@ -106,13 +100,13 @@ public class MyInfoActivity extends BaseActivity<MyInfoContract.Presenter> imple
     }
 
     @Override
-    protected MyInfoContract.Presenter createPresenter() {
-        return new MyInfoPresenter(this);
+    protected SettingContract.Presenter createPresenter() {
+        return new SettingPresenter(this);
     }
 
     @Override
     protected int bindLayout() {
-        return R.layout.activity_myinfo;
+        return R.layout.activity_setting;
     }
 
     @Override

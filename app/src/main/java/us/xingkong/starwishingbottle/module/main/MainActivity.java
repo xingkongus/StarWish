@@ -2,34 +2,27 @@ package us.xingkong.starwishingbottle.module.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
-import cn.bmob.v3.BmobUser;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.ViewPagerAdapter;
 import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
-import us.xingkong.starwishingbottle.module.myinfo.MyInfoActivity;
-import us.xingkong.starwishingbottle.util.FragmentUtil;
+import us.xingkong.starwishingbottle.module.setting.SettingActivity;
 
 public class MainActivity extends BaseActivity<MainContract.Presenter> implements MainContract.View {
 
@@ -60,7 +53,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initViews() {
-        Glide.with(this).load(R.drawable.blowball_dandelion_dandelion_seed_54300).into(imageView);
+        Glide.with(this).load(R.drawable.blowball_dandelion_dandelion_seed_54300).apply(RequestOptions.bitmapTransform(new BlurTransformation(13))).into(imageView);
 //        mTabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
 
         for (String TITLE : TITLES) {
@@ -106,7 +99,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 //                startActivity(new Intent(MainActivity.this, EditMsgActivity.class));
 //                break;
             case R.id.person:
-                startActivity(new Intent(MainActivity.this, MyInfoActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
         }
         return true;
