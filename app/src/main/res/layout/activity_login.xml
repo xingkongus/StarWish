@@ -59,6 +59,7 @@
                 android:layout_height="45dp"
                 android:hint="@string/pls_ent_acc"
                 android:inputType="text" />
+            <requestFocus />
         </android.support.design.widget.TextInputLayout>
 
     </android.support.constraint.ConstraintLayout>

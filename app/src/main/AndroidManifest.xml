@@ -30,13 +30,13 @@
             android:theme="@style/MainActivityTheme"></activity>
         <activity
             android:name=".module.login.LoginActivity"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/AppTheme.Login" />
         <activity
             android:name=".module.register.RegisterActivity"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/AppTheme.Register" />
         <activity
             android:name=".module.first.FirstActivity"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/AppTheme.First">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,12 +49,8 @@
         <activity
             android:name=".module.setting.SettingActivity"
             android:theme="@style/MainActivityTheme" />
-        <activity
-            android:name=".module.main.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme"></activity>
         <activity android:name=".module.info.InfoActivity"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme"/>
     </application>
 
 </manifest>

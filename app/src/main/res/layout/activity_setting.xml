@@ -64,7 +64,7 @@
                         android:id="@+id/bt_change_userinfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/change_userinfo"
+                        android:text="@string/change_info"
                         android:background="@android:color/transparent"/>
 
                 </LinearLayout>

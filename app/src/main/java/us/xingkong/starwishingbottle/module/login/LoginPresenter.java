@@ -1,6 +1,7 @@
 package us.xingkong.starwishingbottle.module.login;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.widget.Toast;
 
 import cn.bmob.v3.BmobUser;
@@ -33,7 +34,7 @@ class LoginPresenter extends BasePresenterImpl implements LoginContract.Presente
             public void done(User user, BmobException e) {
                 if (e != null) {
                     e.printStackTrace();
-                    Toast.makeText(mView.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    Snackbar.make(mView.getActivity().findViewById(android.R.id.content), e.toString(),Snackbar.LENGTH_SHORT).show();
                 } else {
                     mView.getActivity().startActivity(new Intent(mView.getActivity(), MainActivity.class));
                     ActivityCollector.finishAll();
