@@ -5,4 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="yellow">#FFFFBB33</color>
     <color name="blue">#FF35B5E5</color>
+    <color name="login_blue">#4595e6</color>
+    <color name="register_purple">#7a62d5</color>
+    <color name="bt_login_blue">#804595e6</color>
+    <color name="bt_register_purple">#807a62d5</color>
+    <color name="bg_register">#80ffffff</color>
 </resources>

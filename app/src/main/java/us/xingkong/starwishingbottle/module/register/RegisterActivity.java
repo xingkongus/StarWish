@@ -24,6 +24,8 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
     AppCompatEditText username;
     @BindView(R.id.et_password)
     AppCompatEditText password;
+    @BindView(R.id.et_password_re)
+    AppCompatEditText passwordRe;
 
 
     @Override
@@ -33,7 +35,7 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
             @Override
             public void onClick(View v) {
                 mPresenter.register(username.getText().toString().trim(),
-                        password.getText().toString().trim(),
+                        passwordRe.getText().toString().trim(),
                         password.getText().toString().trim());
             }
         });
@@ -45,7 +47,6 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
 
     @Override
     protected void prepareData() {
-
     }
 
     @Override
@@ -63,6 +64,7 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
         register.setEnabled(false);
         username.setEnabled(false);
         password.setEnabled(false);
+        passwordRe.setEnabled(false);
     }
 
     @Override
@@ -70,5 +72,6 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
         register.setEnabled(true);
         username.setEnabled(true);
         password.setEnabled(true);
+        passwordRe.setEnabled(true);
     }
 }

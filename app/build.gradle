@@ -23,7 +23,7 @@ android {
     buildToolsVersion '27.0.3'
     lintOptions {
 
-        disable 'PrivateResource'
+         disable 'PrivateResource'
 
     }
 }
@@ -61,6 +61,4 @@ dependencies {
     implementation project(':bmobmodel')
     implementation project(':visionlibrary')
     implementation 'cn.hugeterry.updatefun:updatefun:2.0.6'
-
-
 }
