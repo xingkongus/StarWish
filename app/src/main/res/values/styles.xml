@@ -12,7 +12,10 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="MainActivityTheme" parent="AppTheme">
-    </style>
+    <style name="MainActivityTheme" parent="AppTheme"></style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

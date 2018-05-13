@@ -20,6 +20,7 @@ android {
     }
     //**兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
     useLibrary 'org.apache.http.legacy'
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
@@ -53,4 +54,5 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     implementation project(':bmobmodel')
     implementation project(':visionlibrary')
+    implementation 'cn.hugeterry.updatefun:updatefun:2.0.6'
 }
