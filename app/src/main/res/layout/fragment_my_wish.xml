@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
-    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <android.support.v4.widget.SwipeRefreshLayout

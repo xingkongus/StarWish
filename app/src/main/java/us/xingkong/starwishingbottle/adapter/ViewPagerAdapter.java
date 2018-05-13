@@ -1,13 +1,20 @@
 package us.xingkong.starwishingbottle.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
+import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import us.xingkong.starwishingbottle.util.FragmentUtil;
 
 /**
  * Created by SeaLynn0 on 2018/5/13 17:49
@@ -16,29 +23,21 @@ import java.util.List;
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Class> fragments;
+    private FragmentManager fm;
+    private Fragment[] fms;
     private String[] titles;
 
-    public ViewPagerAdapter(FragmentManager fm,List<Class> list,String[] titles) {
+    public ViewPagerAdapter(FragmentManager fm,List<Class> fragments,String[] titles) {
         super(fm);
-        this.fragments = list;
-        this.titles = titles;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-
-        try {
-            return (Fragment) fragments.get(position).newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        fms = new Fragment[fragments.size()];
+        for(int i = 0;i < fms.length;i++){
+            try {
+                fms[i] = (Fragment) fragments.get(i).newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-    }
-
-    @Override
-    public int getCount() {
-        return fragments.size();
+        this.titles = titles;
     }
 
     @Nullable
@@ -48,7 +47,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+    public Fragment getItem(int position) {
+        return fms[position];
+    }
+
+    @Override
+    public int getCount() {
+        return fms.length;
     }
 }

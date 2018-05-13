@@ -69,46 +69,13 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
         fragments = new ArrayList<>();
 
-        fragments.add(WishListFrament.class);
-        fragments.add(MyWishFragment.class);
-        fragments.add(WishingFragment.class);
+        fragments.add( WishListFrament.class);
+        fragments.add( MyWishFragment.class);
+        fragments.add( WishingFragment.class);
 
-//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),fragments,TITLES);
-//        viewPager.setAdapter(adapter);
-//        mTabLayout.setupWithViewPager(viewPager);
-        WishListFrament f1 = new WishListFrament();
-        MyWishFragment f2 = new MyWishFragment();
-        WishingFragment f3 = new WishingFragment();
-
-//        FragmentUtil.addFragmentToContainer(getSupportFragmentManager(),f1,R.id.view_pager);
-//        FragmentUtil.addFragmentToContainer(getSupportFragmentManager(),f2,R.id.view_pager);
-//        FragmentUtil.addFragmentToContainer(getSupportFragmentManager(),f3,R.id.view_pager);
-         final View v = getLayoutInflater().inflate(R.layout.fragment_my_wish, null);
-        viewPager.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return 2;
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                container.addView(v);
-                return v;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView(v);
-            }
-        });
-
-
-
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),fragments,TITLES);
+        viewPager.setAdapter(adapter);
+        mTabLayout.setupWithViewPager(viewPager);
 
     }
 
