@@ -25,8 +25,12 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
         this.mView.setPresenter(this);
     }
 
+    /* 缓存策略
+     建议的做法： 第一次进入应用的时候，设置其查询的缓存策略为CACHE_ELSE_NETWORK,
+     当用户执行上拉或者下拉刷新操作时，设置查询的缓存策略为NETWORK_ELSE_CACHE。
+     */
     @Override
-    public void getBottle(FindListener<Message> listener) {
+    public void getBottle(BmobQuery.CachePolicy policy, FindListener<Message> listener) {
         BmobQuery<Message> query = new BmobQuery<>();
 
         query.addWhereEqualTo("published", true);
@@ -35,10 +39,11 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
     }
 
     @Override
-    public void loadMyBottles(FindListener<Message> listener) {
+    public void loadMyBottles(BmobQuery.CachePolicy policy, FindListener<Message> listener) {
         BmobQuery<Message> query = new BmobQuery<>();
         query.addWhereEqualTo("user", User.getCurrentUser());
         query.order("-updatedAt");
+        query.setCachePolicy(policy);
         query.findObjects(listener);
     }
 }

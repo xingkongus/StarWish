@@ -1,5 +1,6 @@
 package us.xingkong.starwishingbottle.module.main;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.starwishingbottle.base.BasePresenter;
 import us.xingkong.starwishingbottle.base.BaseView;
@@ -17,8 +18,8 @@ interface MainContract {
     }
 
     interface Presenter extends BasePresenter{
-        void getBottle(FindListener<Message> listener);
-        void loadMyBottles(FindListener<Message> listener);
+        void getBottle(BmobQuery.CachePolicy policy, FindListener<Message> listener);
+        void loadMyBottles(BmobQuery.CachePolicy policy, FindListener<Message> listener);
     }
 
 

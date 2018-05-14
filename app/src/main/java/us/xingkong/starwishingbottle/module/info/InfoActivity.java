@@ -58,25 +58,25 @@ public class InfoActivity extends AppCompatActivity {
     private File file;//头像文件
     private ProgressDialog progressDialog;
 
-    public static void showUserInfo(Context packageContext,User user){
-        Intent intent = new Intent(packageContext,InfoActivity.class);
-        intent.putExtra(IntentKey_UserID,user.getObjectId());
+    public static void showUserInfo(Context packageContext, User user) {
+        Intent intent = new Intent(packageContext, InfoActivity.class);
+        intent.putExtra(IntentKey_UserID, user.getObjectId());
         packageContext.startActivity(intent);
     }
 
-    public static void showUserInfo(Context packageContext,String userID){
-        Intent intent = new Intent(packageContext,InfoActivity.class);
-        intent.putExtra(IntentKey_UserID,userID);
+    public static void showUserInfo(Context packageContext, String userID) {
+        Intent intent = new Intent(packageContext, InfoActivity.class);
+        intent.putExtra(IntentKey_UserID, userID);
         packageContext.startActivity(intent);
     }
     //--------------------------------------------------------------------
 
 
     private Toolbar toolbar;
-    private AppCompatImageView headImg,headPic;
+    private AppCompatImageView headImg, headPic;
     private CollapsingToolbarLayout toolbarLayout;
-    private TextView username,nickname,phone,email,intor;
-    private AppCompatButton changePssword,changeAvatar;
+    private TextView username, nickname, phone, email, intor;
+    private AppCompatButton changePssword, changeAvatar;
 
     private User user;
 
@@ -90,20 +90,20 @@ public class InfoActivity extends AppCompatActivity {
 
         String id = getIntent().getStringExtra(IntentKey_UserID);
 
-        if(id == null){
-            init(null,new IllegalArgumentException("用户ID为空！"));
-        }else {
+        if (id == null) {
+            init(null, new IllegalArgumentException("用户ID为空！"));
+        } else {
             BmobQuery<User> query = new BmobQuery<User>();
             query.getObject(id, new QueryListener<User>() {
                 @Override
                 public void done(User user, BmobException e) {
-                    init(user,e);
+                    init(user, e);
                 }
             });
         }
     }
 
-    protected void initView(){
+    protected void initView() {
         toolbar = findViewById(R.id.toolbar);
         headImg = findViewById(R.id.head_image);
         headPic = findViewById(R.id.headPic);
@@ -120,20 +120,20 @@ public class InfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    protected void init(final User user, Exception e){
+    protected void init(final User user, Exception e) {
         this.user = user;
-        if(e != null){
+        if (e != null) {
             e.printStackTrace();
-            Log.d(this.toString(),e.toString());
+            Log.d(this.toString(), e.toString());
             return;
         }
 
-        if(user == null)
+        if (user == null)
             return;
 
         toolbarLayout.setTitle(user.getUsername());
 
-        if(user.getAvatar() != null) {
+        if (user.getAvatar() != null) {
             Glide.with(this)
                     .load(user.getAvatar().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
@@ -142,7 +142,7 @@ public class InfoActivity extends AppCompatActivity {
             GlideImageLoader.Circle(Glide.with(this).load(user.getAvatar().getUrl()))
                     .transition(new DrawableTransitionOptions().crossFade())
                     .into(headPic);
-        }else{
+        } else {
 
         }
 
@@ -158,29 +158,29 @@ public class InfoActivity extends AppCompatActivity {
         progressDialog.setTitle("更新头像中");
         progressDialog.setMessage("请稍等……");
         progressDialog.setCancelable(false);
-        if(User.getCurrentUser(User.class) == null || !user.getObjectId().equals(User.getCurrentUser(User.class).getObjectId())){
+        if (User.getCurrentUser(User.class) == null || !user.getObjectId().equals(User.getCurrentUser(User.class).getObjectId())) {
             changePssword.setVisibility(View.GONE);
             changeAvatar.setVisibility(View.GONE);
-        }else{
+        } else {
             changeAvatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     changeAvatar(user);
                 }
             });
-            setListener("昵称", nickname, new EditTextDialog.EditResult() {
+            setListener("昵称", nickname, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
                     User us = new User();
                     us.setNickname(value);
-                    us.update(user.getObjectId(),new UpdateListener() {
+                    us.update(user.getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            if(e == null){
+                            if (e == null) {
                                 nickname.setText(value);
-                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
-                            }else{
-                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -192,19 +192,19 @@ public class InfoActivity extends AppCompatActivity {
 
                 }
             });
-            setListener("电话号码", phone, new EditTextDialog.EditResult() {
+            setListener("电话号码", phone, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
                     User us = new User();
                     us.setMobilePhoneNumber(value);
-                    us.update(user.getObjectId(),new UpdateListener() {
+                    us.update(user.getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            if(e == null){
+                            if (e == null) {
                                 phone.setText(value);
-                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
-                            }else{
-                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -216,19 +216,19 @@ public class InfoActivity extends AppCompatActivity {
 
                 }
             });
-            setListener("简介", intor, new EditTextDialog.EditResult() {
+            setListener("简介", intor, false, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
                     User us = new User();
                     us.setIntor(value);
-                    us.update(user.getObjectId(),new UpdateListener() {
+                    us.update(user.getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            if(e == null){
+                            if (e == null) {
                                 intor.setText(value);
-                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
-                            }else{
-                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -240,19 +240,19 @@ public class InfoActivity extends AppCompatActivity {
 
                 }
             });
-            setListener("邮箱", email, new EditTextDialog.EditResult() {
+            setListener("邮箱", email, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
                     User us = new User();
                     us.setEmail(value);
-                    us.update(user.getObjectId(),new UpdateListener() {
+                    us.update(user.getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            if(e == null){
+                            if (e == null) {
                                 email.setText(value);
-                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
-                            }else{
-                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -265,28 +265,29 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
         }
-        setText(user.getUsername(),username);
-        setText(user.getNickname(),nickname);
-        setText(user.getEmail(),email);
-        setText(user.getMobilePhoneNumber(),phone);
-        setText(user.getIntor(),intor);
+        setText(user.getUsername(), username);
+        setText(user.getNickname(), nickname);
+        setText(user.getEmail(), email);
+        setText(user.getMobilePhoneNumber(), phone);
+        setText(user.getIntor(), intor);//
 
         //setListener("用户名",username);
     }
 
-    protected void setListener(final String key, final TextView value, final EditTextDialog.EditResult editResult){
+    protected void setListener(final String key, final TextView value, final Boolean isSingle
+            , final EditTextDialog.EditResult editResult) {
         value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditTextDialog.Edit(InfoActivity.this,
                         "编辑", key,
-                        value.getText().toString(),editResult );
-        }
+                        value.getText().toString(), editResult, isSingle);
+            }
         });
     }
 
-    protected void setText(String text,TextView textView){
-        if(text != null && text.length() > 0)
+    protected void setText(String text, TextView textView) {
+        if (text != null && text.length() > 0)
             textView.setText(text);
     }
 
@@ -300,9 +301,9 @@ public class InfoActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void changeAvatar(User user){
-        if(user == null) {
-            Log.d("changeAvatar","User is invaild!");
+    protected void changeAvatar(User user) {
+        if (user == null) {
+            Log.d("changeAvatar", "User is invaild!");
             return;
         }
         if (!user.getObjectId().equals(User.getCurrentUser(User.class).getObjectId()))
@@ -316,16 +317,16 @@ public class InfoActivity extends AppCompatActivity {
         });
     }
 
-    public static void uploadAvatar(final User user, File file, final UploadFileListener listener){
+    public static void uploadAvatar(final User user, File file, final UploadFileListener listener) {
         final BmobFile bf = new BmobFile(file);
         bf.upload(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
-                if(e != null)
+                if (e != null)
                     listener.done(e);
                 else {
 
-                    if(user.getAvatar() != null)
+                    if (user.getAvatar() != null)
                         user.getAvatar().delete();//先删除旧头像
                     user.setAvatar(bf);
                     user.update(new UpdateListener() {
@@ -340,13 +341,14 @@ public class InfoActivity extends AppCompatActivity {
         });
     }
 
-    protected void showMessage(String message){
-        Snackbar.make(InfoActivity.this.findViewById(android.R.id.content),message,Snackbar.LENGTH_SHORT).show();
+    protected void showMessage(String message) {
+        Snackbar.make(InfoActivity.this.findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode == 1){
+        if (requestCode == 1) {
 
             if (data != null && data.getData() != null) {
                 Glide.with(this)
@@ -363,16 +365,16 @@ public class InfoActivity extends AppCompatActivity {
                 uploadAvatar(this.user, file, new UploadFileListener() {
                     @Override
                     public void done(BmobException e) {
-                        if(e == null){
+                        if (e == null) {
                             showMessage("头像更新成功");
-                        }else{
+                        } else {
                             showMessage("头像更新失败\n" + e.toString());
                         }
                         progressDialog.dismiss();
                     }
                 });
             }
-        }else if(requestCode == 2){
+        } else if (requestCode == 2) {
             if (data != null && data.getExtras() != null && data.getExtras().get("data") != null) {
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
 
@@ -399,9 +401,9 @@ public class InfoActivity extends AppCompatActivity {
                 uploadAvatar(this.user, file, new UploadFileListener() {
                     @Override
                     public void done(BmobException e) {
-                        if(e == null){
+                        if (e == null) {
                             showMessage("头像更新成功");
-                        }else{
+                        } else {
                             showMessage("头像更新失败\n" + e.toString());
                         }
                         progressDialog.dismiss();

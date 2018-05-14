@@ -6,7 +6,11 @@ import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,28 +37,36 @@ public class EditTextDialog extends AppCompatDialog {
     @BindView(R.id.cancel)
     AppCompatButton cancel;
 
+    private Boolean isSingle;
 
-    public static void Edit(Context context,String title,String key,String value,EditResult result){
-        EditTextDialog editTextDialog = new EditTextDialog(context,result);
+
+    public static void Edit(Context context, String title, String key, String value,
+                            EditResult result, Boolean isSingle) {
+        EditTextDialog editTextDialog = new EditTextDialog(context, result, isSingle);
         editTextDialog.t = title;
         editTextDialog.v = value;
         editTextDialog.k = key;
         editTextDialog.show();
     }
 
-    public EditTextDialog(Context context,EditResult result) {
+    public EditTextDialog(Context context, EditResult result) {
         super(context);
         this.result = result;
     }
 
-    public EditTextDialog(Context context, int theme,EditResult result) {
+    public EditTextDialog(Context context, int theme, EditResult result) {
         super(context, theme);
         this.result = result;
     }
 
-    protected EditTextDialog(Context context, boolean cancelable, OnCancelListener cancelListener,EditResult result) {
+    protected EditTextDialog(Context context, boolean cancelable, OnCancelListener cancelListener, EditResult result) {
         super(context, cancelable, cancelListener);
         this.result = result;
+    }
+
+    public EditTextDialog(Context context, EditResult result, Boolean isSingle) {
+        this(context, result);
+        this.isSingle = isSingle;
     }
 
     @Override
@@ -63,11 +75,18 @@ public class EditTextDialog extends AppCompatDialog {
         setContentView(R.layout.dialog_edittext);
         ButterKnife.bind(this);
 
+        //设置窗口大小
+        Window dialogWindow = getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        DisplayMetrics d = this.getContext().getResources().getDisplayMetrics();
+        lp.width = (int) (d.widthPixels * 0.95f);
+        dialogWindow.setAttributes(lp);
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditTextDialog.this.dismiss();
-                if(result != null)
+                if (result != null)
                     result.onCancel();
             }
         });
@@ -76,15 +95,20 @@ public class EditTextDialog extends AppCompatDialog {
             @Override
             public void onClick(View view) {
                 EditTextDialog.this.dismiss();
-                if(result != null)
+                if (result != null)
                     result.onOK(value.getText().toString());
             }
         });
 
         title.setText(t);
         key.setText(k);
+        value.setSingleLine(isSingle);
+        if(!isSingle)
+        {
+            value.setMinLines(5);
+            value.setMaxLines(10);
+        }
         value.append(v);
-
     }
 
     public interface EditResult {

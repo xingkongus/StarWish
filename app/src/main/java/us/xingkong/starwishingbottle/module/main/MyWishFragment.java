@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.starwishingbottle.R;
@@ -45,23 +46,31 @@ public class MyWishFragment extends BaseFragment<MainContract.Presenter> impleme
         adapter = new RecyclerAdapter(messages,this.getContext());
         mWishList.setAdapter(adapter);
 
-
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadMyBottles(new FindListener<Message>() {
-                    @Override
-                    public void done(List<Message> list, BmobException e) {
-                        if (e != null) {
-                            e.printStackTrace();
-                        } else {
-                            messages = list;
-                            adapter.setMessages(list);
-                            adapter.notifyDataSetChanged();
-                        }
-                        refreshLayout.setRefreshing(false);
-                    }
-                });
+                loadMyMessages(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            }
+        });
+
+        if (messages.size()==0){
+            loadMyMessages(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        }
+    }
+
+    private void loadMyMessages(BmobQuery.CachePolicy policy) {
+        refreshLayout.setRefreshing(true);
+        mPresenter.loadMyBottles(policy,new FindListener<Message>() {
+            @Override
+            public void done(List<Message> list, BmobException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                } else {
+                    messages = list;
+                    adapter.setMessages(list);
+                    adapter.notifyDataSetChanged();
+                }
+                refreshLayout.setRefreshing(false);
             }
         });
     }
@@ -75,6 +84,7 @@ public class MyWishFragment extends BaseFragment<MainContract.Presenter> impleme
     protected int bindLayout() {
         return R.layout.fragment_my_wish;
     }
+
 
 
 }

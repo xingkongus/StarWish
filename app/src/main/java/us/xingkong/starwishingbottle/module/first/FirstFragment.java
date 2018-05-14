@@ -2,10 +2,13 @@ package us.xingkong.starwishingbottle.module.first;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -72,12 +75,30 @@ public class FirstFragment extends BaseFragment<FirstContract.Presenter>
             }
         });
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getFragmentContext(), RegisterActivity.class));
-            }
-        });
+        if (getContext() != null)
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("免责声明")
+                            .content(R.string.large_text)
+                            .positiveText("同意")
+                            .negativeText("不同意")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    startActivity(new Intent(getFragmentContext(), RegisterActivity.class));
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+//
+                }
+            });
     }
 
     @Override
