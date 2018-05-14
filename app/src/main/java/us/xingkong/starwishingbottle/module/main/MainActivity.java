@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.update.BmobUpdateAgent;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.ViewPagerAdapter;
@@ -74,6 +75,9 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void prepareData() {
+        BmobUpdateAgent.initAppVersion();
+        BmobUpdateAgent.setUpdateOnlyWifi(false);
+        BmobUpdateAgent.update(this);
     }
 
     @Override

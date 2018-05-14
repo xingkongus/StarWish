@@ -7,6 +7,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.update.BmobUpdateAgent;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.ActivityCollector;
@@ -42,6 +44,8 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
     AppCompatButton logout;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.bt_check_update)
+    AppCompatButton update;
 
     @Override
     protected void initEvent(Bundle savedInstanceState) {
@@ -93,6 +97,13 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
 
         }
 
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("update", "++++");
+                BmobUpdateAgent.forceUpdate(SettingActivity.this);
+            }
+        });
 
     }
 

@@ -60,5 +60,4 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     implementation project(':bmobmodel')
     implementation project(':visionlibrary')
-    implementation 'cn.hugeterry.updatefun:updatefun:2.0.6'
 }
