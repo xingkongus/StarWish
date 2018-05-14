@@ -37,11 +37,12 @@
     <style name="AppTheme.Register" parent="FullscreenTheme">
         <item name="android:windowBackground">@color/login_blue</item>
     </style>
+
     <style name="AppTheme.Login" parent="FullscreenTheme">
         <item name="android:windowBackground">@color/register_purple</item>
     </style>
     <!--<style name="AppTheme.First" parent="AppTheme.Full">-->
-        <!--<item name="android:windowBackground">@drawable/blowball_dandelion_dandelion_seed_54300</item>-->
+    <!--<item name="android:windowBackground">@drawable/blowball_dandelion_dandelion_seed_54300</item>-->
     <!--</style>-->
 
 </resources>
