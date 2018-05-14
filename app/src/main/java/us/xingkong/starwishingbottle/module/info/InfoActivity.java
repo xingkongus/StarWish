@@ -36,6 +36,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.R;
+import us.xingkong.starwishingbottle.dialog.EditTextDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.main.MainActivity;
@@ -167,12 +168,121 @@ public class InfoActivity extends AppCompatActivity {
                     changeAvatar(user);
                 }
             });
+            setListener("昵称", nickname, new EditTextDialog.EditResult() {
+                @Override
+                public void onOK(final String value) {
+                    User us = new User();
+                    us.setNickname(value);
+                    us.update(user.getObjectId(),new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if(e == null){
+                                nickname.setText(value);
+                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
+                            }else{
+                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+            setListener("电话号码", phone, new EditTextDialog.EditResult() {
+                @Override
+                public void onOK(final String value) {
+                    User us = new User();
+                    us.setMobilePhoneNumber(value);
+                    us.update(user.getObjectId(),new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if(e == null){
+                                phone.setText(value);
+                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
+                            }else{
+                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+            setListener("简介", intor, new EditTextDialog.EditResult() {
+                @Override
+                public void onOK(final String value) {
+                    User us = new User();
+                    us.setIntor(value);
+                    us.update(user.getObjectId(),new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if(e == null){
+                                intor.setText(value);
+                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
+                            }else{
+                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+            setListener("邮箱", email, new EditTextDialog.EditResult() {
+                @Override
+                public void onOK(final String value) {
+                    User us = new User();
+                    us.setEmail(value);
+                    us.update(user.getObjectId(),new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if(e == null){
+                                email.setText(value);
+                                Snackbar.make(nickname,"修改成功",Snackbar.LENGTH_SHORT).show();
+                            }else{
+                                Snackbar.make(nickname,"修改失败\n" + e,Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
         setText(user.getUsername(),username);
         setText(user.getNickname(),nickname);
         setText(user.getEmail(),email);
         setText(user.getMobilePhoneNumber(),phone);
         setText(user.getIntor(),intor);
+
+        //setListener("用户名",username);
+    }
+
+    protected void setListener(final String key, final TextView value, final EditTextDialog.EditResult editResult){
+        value.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditTextDialog.Edit(InfoActivity.this,
+                        "编辑", key,
+                        value.getText().toString(),editResult );
+        }
+        });
     }
 
     protected void setText(String text,TextView textView){

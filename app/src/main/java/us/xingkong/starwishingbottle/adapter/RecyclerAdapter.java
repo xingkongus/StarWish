@@ -82,7 +82,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     e.printStackTrace();
                     Log.d(this.toString(),e.toString());
                 }else{
-                    holder.user.setText(user.getUsername());
+                    if(user.getNickname() == null || user.getNickname().length() <= 0)
+                        holder.user.setText(user.getUsername());
+                    else
+                        holder.user.setText(user.getNickname());
 
                     if (user != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)
                         GlideImageLoader.Circle(Glide.with(context)

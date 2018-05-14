@@ -137,4 +137,6 @@
     <string name="nickname">昵称</string>
     <string name="intor">简介</string>
     <string name="change_avatar">更换头像</string>
+    <string name="ok">确定</string>
+    <string name="cancle">取消</string>
 </resources>
