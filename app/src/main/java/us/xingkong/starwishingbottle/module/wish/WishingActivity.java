@@ -19,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -38,6 +39,7 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.R;
+import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.Message;
 import xyz.sealynn.bmobmodel.model.Reversion;
@@ -74,6 +76,8 @@ public class WishingActivity extends AppCompatActivity {
     AppCompatTextView preview;
     @BindView(R.id.date)
     AppCompatTextView date;
+    @BindView(R.id.part_user)
+    LinearLayout part_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +114,7 @@ public class WishingActivity extends AppCompatActivity {
         me = User.getCurrentUser(User.class);
     }
 
-    protected void init(Message message,Exception e){
+    protected void init(final Message message, Exception e){
         this.message = message;
         if(e != null){
             e.printStackTrace();
@@ -145,8 +149,12 @@ public class WishingActivity extends AppCompatActivity {
                 }
                 }
             });
-
-
+            part_user.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InfoActivity.showUserInfo(WishingActivity.this,message.getUser());
+                }
+            });
         }
 
         if(message.getFinished() == null)
