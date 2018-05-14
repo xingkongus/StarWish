@@ -17,6 +17,9 @@ import cn.bmob.v3.listener.UploadFileListener;
 public class User extends BmobUser {
 
     private BmobFile avatar;
+    private String nickname;
+    private int sex;
+    private String intor;
 
     public BmobFile getAvatar() {
         return avatar;
@@ -25,6 +28,31 @@ public class User extends BmobUser {
     public void setAvatar(BmobFile avatar) {
         this.avatar = avatar;
     }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getIntor() {
+        return intor;
+    }
+
+    public void setIntor(String intor) {
+        this.intor = intor;
+    }
+
 
     public static void login(String username, String password, SaveListener<User> listener) {
         User user = new User();

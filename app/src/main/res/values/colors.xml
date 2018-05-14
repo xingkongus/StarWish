@@ -10,4 +10,7 @@
     <color name="bt_login_blue">#804595e6</color>
     <color name="bt_register_purple">#807a62d5</color>
     <color name="bg_register">#80ffffff</color>
+
+    <color name="light">#dcffffff</color>
+    <color name="dark">#80597764</color>
 </resources>

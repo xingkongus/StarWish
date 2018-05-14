@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;
@@ -34,7 +35,7 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
 
 
     @BindView(R.id.bt_change_userinfo)
-    AppCompatButton change_password;
+    AppCompatButton change_userinfo;
     @BindView(R.id.head_image)
     AppCompatImageView headImg;
     @BindView(R.id.bt_logout)
@@ -49,6 +50,12 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
 
     @Override
     protected void initViews() {
+        change_userinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InfoActivity.showUserInfo(SettingActivity.this,User.getCurrentUser(User.class));
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
