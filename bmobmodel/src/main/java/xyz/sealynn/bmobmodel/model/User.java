@@ -66,11 +66,14 @@ public class User extends BmobUser {
         user.login(listener);
     }
 
-    public static void signUp(String username, String password, String passwordRe, SaveListener<User> listener) {
+    public static void signUp(String username,String nickname ,String password, String passwordRe, SaveListener<User> listener) {
         if (!password.equals(passwordRe))
             throw new IllegalArgumentException("两次密码不一样");
         User user = new User();
         user.setUsername(username);
+        if (nickname==null||nickname.length()==0)
+            nickname = username;
+        user.setNickname(nickname);
         user.setPassword(password);
         signUp(user, listener);
 

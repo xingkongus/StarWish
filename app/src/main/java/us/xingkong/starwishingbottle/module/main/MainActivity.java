@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
-    private static final String[] TITLES = {"星愿", "我的", "实现"};
+    private static final String[] TITLES = {"星愿", "我的", "关注"};
 
     private List<Class> fragments;
 

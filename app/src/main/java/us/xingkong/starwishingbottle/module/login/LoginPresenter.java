@@ -2,6 +2,7 @@ package us.xingkong.starwishingbottle.module.login;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import cn.bmob.v3.BmobUser;
@@ -11,6 +12,8 @@ import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.base.BasePresenterImpl;
 import us.xingkong.starwishingbottle.module.main.MainActivity;
 import xyz.sealynn.bmobmodel.model.User;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * Created by SeaLynn0 on 2018/4/23 23:30

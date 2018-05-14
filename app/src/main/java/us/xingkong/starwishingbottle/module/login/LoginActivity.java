@@ -66,4 +66,5 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         username.setEnabled(true);
         password.setEnabled(true);
     }
+
 }

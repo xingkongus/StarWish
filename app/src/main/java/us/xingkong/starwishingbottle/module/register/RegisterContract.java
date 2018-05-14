@@ -10,12 +10,13 @@ import us.xingkong.starwishingbottle.base.BaseView;
  */
 interface RegisterContract {
 
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
         void freeze();
+
         void unfreeze();
     }
 
-    interface Presenter extends BasePresenter{
-        void register(String username, String password,String passwordRe);
+    interface Presenter extends BasePresenter {
+        void register(String username, String nickname, String password, String passwordRe);
     }
 }
