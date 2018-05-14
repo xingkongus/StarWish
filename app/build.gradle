@@ -51,13 +51,13 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
-    compile 'jp.wasabeef:glide-transformations:3.0.1'
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
     implementation 'com.youth.banner:banner:1.4.10'
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
     implementation 'com.github.daniel-stoneuk:material-about-library:2.3.0'
-    implementation 'com.orhanobut:logger:2.2.0'
     implementation project(':bmobmodel')
     implementation project(':visionlibrary')
+    implementation 'pub.devrel:easypermissions:1.2.0'
 }

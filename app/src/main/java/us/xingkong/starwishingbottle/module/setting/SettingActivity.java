@@ -21,6 +21,7 @@ import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import us.xingkong.starwishingbottle.module.about.AboutActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.R;
@@ -46,6 +47,8 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.bt_check_update)
     AppCompatButton update;
+    @BindView(R.id.bt_about)
+    AppCompatButton about;
 
     @Override
     protected void initEvent(Bundle savedInstanceState) {
@@ -102,6 +105,13 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
             public void onClick(View v) {
                 Log.d("update", "++++");
                 BmobUpdateAgent.forceUpdate(SettingActivity.this);
+            }
+        });
+
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, AboutActivity.class));
             }
         });
 

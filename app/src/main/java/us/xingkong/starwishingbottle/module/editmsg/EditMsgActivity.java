@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatButton;
@@ -30,13 +31,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UploadFileListener;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;
+import us.xingkong.starwishingbottle.base.Constants;
+import us.xingkong.starwishingbottle.module.main.MainActivity;
 import us.xingkong.visionlibrary.operator.Blur;
 import us.xingkong.visionlibrary.operator.Light;
 import vision.core.Core;
@@ -48,7 +54,8 @@ import xyz.sealynn.bmobmodel.model.User;
  * <p>
  * Email：sealynndev@gmail.com
  */
-public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter> implements EditMsgContract.View {
+public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
+        implements EditMsgContract.View,EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.et_content)
     AppCompatEditText content;
@@ -114,6 +121,11 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter> imp
         progressDialog.setTitle("正在许愿");
         progressDialog.setMessage("请稍等……");
         progressDialog.setCancelable(false);
+
+        if (!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS)){
+            EasyPermissions.requestPermissions(EditMsgActivity.this, getString(R.string.need_permission),
+                    0, Constants.PERMISSIONS);
+        }
     }
 
     @Override
@@ -352,5 +364,17 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter> imp
         b = null;
         //updateOutput();
         System.gc();
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
     }
 }

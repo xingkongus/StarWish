@@ -8,9 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="FullscreenTheme" parent="AppTheme">
-        <item name="android:windowFullscreen">true</item>
-    </style>
+    <!--<style name="FullscreenTheme" parent="AppTheme">-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+    <!--</style>-->
 
     <!--<style name="MainActivityTheme" parent="AppTheme"></style>-->
 
@@ -34,14 +34,19 @@
         <item name="android:windowDisablePreview">true</item>
     </style>
 
-    <style name="AppTheme.Register" parent="FullscreenTheme">
+    <style name="AppTheme.Register" parent="AppTheme.Full">
         <item name="android:windowBackground">@color/login_blue</item>
     </style>
-    <style name="AppTheme.Login" parent="FullscreenTheme">
+    <style name="AppTheme.Login" parent="AppTheme.Full">
         <item name="android:windowBackground">@color/register_purple</item>
     </style>
     <!--<style name="AppTheme.First" parent="AppTheme.Full">-->
         <!--<item name="android:windowBackground">@drawable/blowball_dandelion_dandelion_seed_54300</item>-->
     <!--</style>-->
+    <style name="AppTheme.About" parent="Theme.Mal.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
 </resources>
