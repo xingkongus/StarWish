@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
@@ -60,8 +61,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         final Message message = messages.get(position);
 
         holder.preview.setText(message.getContent());
-        if (message.getPicture() != null)
-            Glide.with(context).load(message.getPicture().getUrl()).into(holder.picture);
+        if (message.getPicture() != null && message.getPicture().getUrl() != null)
+            Glide.with(context)
+                    .load(message.getPicture().getUrl())
+                    .transition(new DrawableTransitionOptions().crossFade())
+                    .apply(new RequestOptions().placeholder(R.drawable.blowball_dandelion_dandelion_seed_54300))
+                    .into(holder.picture);
+        else
+            Glide.with(context)
+                    .load(R.drawable.blowball_dandelion_dandelion_seed_54300)
+                    .transition(new DrawableTransitionOptions().crossFade())
+                    .into(holder.picture);
 
         BmobQuery<User> q = new BmobQuery<>();
 
@@ -74,18 +84,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 }else{
                     holder.user.setText(user.getUsername());
 
-                    if (user != null && user.getAvatar() != null)
-
-                        GlideImageLoader.Circle(Glide.with(context).load(user.getAvatar().getUrl())).
-                            into(holder.headPic);
+                    if (user != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)
+                        GlideImageLoader.Circle(Glide.with(context)
+                                .load(user.getAvatar().getUrl()))
+                                .transition(new DrawableTransitionOptions().crossFade())
+                                .apply(new RequestOptions().placeholder(R.drawable.ic_action_person))
+                                .into(holder.headPic);
+                    else
+                        GlideImageLoader.Circle(Glide.with(context)
+                                .load(R.drawable.ic_action_person)
+                                .transition(new DrawableTransitionOptions().crossFade()))
+                                .into(holder.headPic);
                 }
             }
         });
 
         if(message.getFinished() == null)
             holder.isFinished.setVisibility(View.GONE);
+        else
+            holder.isFinished.setVisibility(View.VISIBLE);
+
         if(message.getPublished())
             holder.isPrivate.setVisibility(View.GONE);
+        else
+            holder.isPrivate.setVisibility(View.VISIBLE);
 
         holder.date.setText(message.getCreatedAt());
         holder.userinfo.setOnClickListener(new View.OnClickListener() {

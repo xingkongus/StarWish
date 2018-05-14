@@ -1,5 +1,6 @@
 package us.xingkong.starwishingbottle.module.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -25,8 +26,12 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
     }
 
     @Override
-    public void getBottle() {
+    public void getBottle(FindListener<Message> listener) {
+        BmobQuery<Message> query = new BmobQuery<>();
 
+        query.addWhereEqualTo("published", true);
+        query.order("-createdAt");
+        query.findObjects(listener);
     }
 
     @Override

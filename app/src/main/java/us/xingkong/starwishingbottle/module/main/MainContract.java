@@ -17,7 +17,9 @@ interface MainContract {
     }
 
     interface Presenter extends BasePresenter{
-        void getBottle();
+        void getBottle(FindListener<Message> listener);
         void loadMyBottles(FindListener<Message> listener);
     }
+
+
 }
