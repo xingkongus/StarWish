@@ -35,6 +35,7 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
 
         query.addWhereEqualTo("published", true);
         query.order("-updatedAt");
+        query.setCachePolicy(policy);
         query.findObjects(listener);
     }
 
