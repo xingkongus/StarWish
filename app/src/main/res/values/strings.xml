@@ -139,5 +139,6 @@
     <string name="change_avatar">更换头像</string>
     <string name="ok">确定</string>
     <string name="cancle">取消</string>
-    <string name="need_permission">App需要以下权限来确保功能的完整。</string>
+    <string name="need_permission">图片需要读取存储权限</string>
+    <string name="title_activity_wishing">WishingActivity</string>
 </resources>

@@ -23,6 +23,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
 import us.xingkong.starwishingbottle.R;
+import us.xingkong.starwishingbottle.module.WishingActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.Message;
@@ -112,7 +113,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         else
             holder.isPrivate.setVisibility(View.VISIBLE);
 
-        holder.date.setText(message.getCreatedAt());
+        holder.date.setText(message.getUpdatedAt());
         holder.userinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +124,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                WishingActivity.showWishing(context,message);
             }
         });
 

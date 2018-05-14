@@ -70,6 +70,10 @@
             android:name="cn.bmob.v3.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".module.WishingActivity"
+            android:label="@string/title_activity_wishing"
+            android:theme="@style/AppTheme.Full" />
         <activity android:name=".module.about.AboutActivity"
             android:theme="@style/AppTheme.About"/>
     </application>
