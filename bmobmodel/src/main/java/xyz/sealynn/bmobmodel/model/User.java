@@ -109,4 +109,15 @@ public class User extends BmobUser {
             }
         });
     }
+
+    /**
+     * 获取用户昵称(昵称为空时返回用户名)
+     * @return
+     */
+    public String getNicknameOrUsername(){
+        if(nickname != null && nickname.length() > 0)
+            return nickname;
+        else
+            return getUsername();
+    }
 }

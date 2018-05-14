@@ -2,13 +2,20 @@ package us.xingkong.starwishingbottle.module.wish;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +23,8 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.List;
 
@@ -145,12 +154,14 @@ public class WishingActivity extends AppCompatActivity {
         if(message.getPublished())
             isprivate.setVisibility(View.GONE);
 
-        if (message.getPicture() != null && message.getPicture().getUrl() != null)
+        if (message.getPicture() != null && message.getPicture().getUrl() != null) {
+
             Glide.with(this)
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(picture);
+                    .into(GlideImageLoader.FitXY(picture,R.id.action_settings));
+        }
 
         preview.setText(message.getContent());
         date.setText(message.getUpdatedAt());
@@ -161,9 +172,7 @@ public class WishingActivity extends AppCompatActivity {
         if(owner == null)
             return;
         User user = owner;
-        String username = user.getNickname();
-        if(username == null)
-            username = user.getUsername();
+        String username = user.getNicknameOrUsername();
         toolbarLayout.setTitle(username + "的愿望");
 
         if (owner != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)

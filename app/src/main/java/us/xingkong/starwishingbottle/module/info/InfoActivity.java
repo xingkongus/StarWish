@@ -131,7 +131,7 @@ public class InfoActivity extends AppCompatActivity {
         if (user == null)
             return;
 
-        toolbarLayout.setTitle(user.getUsername());
+        toolbarLayout.setTitle(user.getNicknameOrUsername());
 
         if (user.getAvatar() != null) {
             Glide.with(this)

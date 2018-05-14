@@ -91,7 +91,7 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
 
         User user = User.getCurrentUser(User.class);
         if(user != null) {
-            collapsingToolbarLayout.setTitle(user.getUsername());
+            collapsingToolbarLayout.setTitle(user.getNicknameOrUsername());
             if(user.getAvatar() != null)
                 Glide.with(this).load(user.getAvatar().getUrl())
                         .apply(RequestOptions.bitmapTransform(new BlurTransformation(13)))

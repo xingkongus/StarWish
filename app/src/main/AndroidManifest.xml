@@ -19,6 +19,7 @@
 
 
     <application
+        android:largeHeap="true"
         android:name=".WishingBottleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -8,101 +8,109 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".module.wish.WishingActivity"
     tools:showIn="@layout/activity_wishing">
-
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
-        app:cardCornerRadius="10dp"
-        app:elevation="5dp"
-        android:layout_margin="16dp">
-
-        <LinearLayout
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            app:cardCornerRadius="10dp"
+            app:elevation="5dp"
+            android:layout_margin="16dp">
 
             <LinearLayout
-
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
                 <LinearLayout
-                    android:id="@+id/part_user"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="match_parent">
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/headPic"
-                        android:src="@drawable/ic_action_person"
+
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <LinearLayout
+                        android:id="@+id/part_user"
                         android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="0.3"/>
+                        android:layout_weight="0.5"
+                        android:layout_height="match_parent">
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/headPic"
+                            android:src="@drawable/ic_action_person"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"/>
 
-                    <android.support.v7.widget.AppCompatTextView
+                        <android.support.v7.widget.AppCompatTextView
 
-                        android:id="@+id/user"
-                        android:gravity="center|left"
+                            android:id="@+id/user"
+                            android:gravity="center|left"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.7"
+                            android:layout_height="match_parent"
+                            android:text="User"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:gravity="right|center"
                         android:layout_width="0dp"
-                        android:layout_weight="0.7"
-                        android:layout_height="match_parent"
-                        android:text="User"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:gravity="right|center"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="match_parent">
+                        android:layout_weight="0.5"
+                        android:layout_height="match_parent">
 
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/isfinisher"
-                        android:src="@drawable/ic_action_mood"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/isprivate"
-                        android:src="@drawable/ic_action_private"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/isfinisher"
+                            android:src="@drawable/ic_action_mood"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/isprivate"
+                            android:src="@drawable/ic_action_private"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
                 </LinearLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+
+                    android:layout_margin="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:id="@+id/preview"
+                    android:textSize="22sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cardview_dark_background"
+                    android:text="Wishing..."/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_margin="26dp"
+                    android:id="@+id/picture"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/date"
+                    android:layout_margin="10dp"
+                    android:gravity="center|right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="Date"/>
 
             </LinearLayout>
 
-            <android.support.v7.widget.AppCompatTextView
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
-                android:layout_margin="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:id="@+id/preview"
-                android:textSize="22sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cardview_dark_background"
-                android:text="Wishing..."/>
 
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_margin="26dp"
-                android:id="@+id/picture"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/date"
-                android:layout_margin="10dp"
-                android:gravity="center|right"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="Date"/>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
 
 </android.support.v4.widget.NestedScrollView>
