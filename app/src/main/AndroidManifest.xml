@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:value="Channel ID" android:name="BMOB_CHANNEL"/>
+        <meta-data android:value="starwish" android:name="BMOB_CHANNEL"/>
 
         <provider
             android:authorities="cn.bmob.update.fileprovider"

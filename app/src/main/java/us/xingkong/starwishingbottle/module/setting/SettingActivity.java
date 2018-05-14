@@ -19,7 +19,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
+import cn.bmob.v3.update.UpdateResponse;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.module.about.AboutActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
@@ -104,6 +106,13 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
             @Override
             public void onClick(View v) {
                 Log.d("update", "++++");
+                BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
+                    @Override
+                    public void onUpdateReturned(int i, UpdateResponse updateResponse) {
+                        Log.d("!!!update", i + "\n" + updateResponse.exception);
+
+                    }
+                });
                 BmobUpdateAgent.forceUpdate(SettingActivity.this);
             }
         });

@@ -2,7 +2,6 @@ package us.xingkong.starwishingbottle.module.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -20,12 +19,9 @@ import java.util.List;
 import butterknife.BindView;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.ViewPagerAdapter;
 import us.xingkong.starwishingbottle.base.BaseActivity;
-import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.setting.SettingActivity;
 
