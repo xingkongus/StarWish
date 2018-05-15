@@ -1,11 +1,10 @@
 package us.xingkong.starwishingbottle.module.info;
 
-import android.support.v7.widget.AppCompatButton;
 import android.widget.TextView;
 
 import us.xingkong.starwishingbottle.base.BasePresenter;
 import us.xingkong.starwishingbottle.base.BaseView;
-import xyz.sealynn.bmobmodel.model.User;
+import us.xingkong.starwishingbottle.dialog.EditTextDialog;
 
 /**
  * Created by SeaLynn0 on 2018/5/15 14:45
@@ -16,11 +15,14 @@ public class InfoContarct {
 
     interface View extends BaseView<Presenter> {
         void showMessage(String message);
+
+        void setText(String text, TextView textView);
+
+        void setListener(final String key, final TextView value, final Boolean isSingle
+                , final EditTextDialog.EditResult editResult);
     }
 
     interface Presenter extends BasePresenter {
-        void updateInfo(User user, String value, TextView view);
-
-        void changePassword(String oriPass, String newPass, final AppCompatButton bt);
+        void changePassword(String oriPass, String newPass, String newPassRe, android.view.View view);
     }
 }

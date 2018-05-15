@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -122,9 +123,10 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         progressDialog.setMessage("请稍等……");
         progressDialog.setCancelable(false);
 
-        if (!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS)){
+        if (!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE)
+                &&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             EasyPermissions.requestPermissions(EditMsgActivity.this, getString(R.string.need_permission),
-                    0, Constants.PERMISSIONS);
+                    0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
         }
     }
 
@@ -364,6 +366,17 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         b = null;
         //updateOutput();
         System.gc();
+    }
+
+    /**
+     * 以下是关于EasyPermissions对权限的操作
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override

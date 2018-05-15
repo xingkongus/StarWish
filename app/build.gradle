@@ -38,7 +38,7 @@ dependencies {
     //以下SDK开发者请根据需要自行选择
     //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
     //3.5.5：请务必查看下面注释[1]
-    implementation 'cn.bmob.android:bmob-sdk:3.6.0'
+    implementation 'cn.bmob.android:bmob-sdk:3.6.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
@@ -59,4 +59,7 @@ dependencies {
     implementation project(':bmobmodel')
     implementation project(':visionlibrary')
     implementation 'pub.devrel:easypermissions:1.2.0'
+    implementation ('com.github.huburt-Hu:NewbieGuide:v2.1.0') {
+        exclude group: 'com.android.support'
+    }
 }

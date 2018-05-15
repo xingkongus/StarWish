@@ -139,7 +139,7 @@
     <string name="change_avatar">更换头像</string>
     <string name="ok">确定</string>
     <string name="cancle">取消</string>
-    <string name="need_permission">图片需要读取存储权限</string>
+    <string name="need_permission">图文功能需要读取存储权限</string>
     <string name="title_activity_wishing">WishingActivity</string>
     <string name="pls_ent_nik">请输入昵称</string>
     <string name="username_filter">0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM</string>
@@ -152,4 +152,5 @@
     <string name="come_true">美梦成真</string>
     <string name="noneEx">空空如也</string>
     <string name="like">喜欢</string>
+    <string name="need_phone_permission">为了方面我们统计安装的数量，请赋予APP读取设备信息的权限。</string>
 </resources>

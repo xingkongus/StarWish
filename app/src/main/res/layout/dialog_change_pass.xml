@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:orientation="vertical">
 
@@ -13,53 +13,47 @@
         android:textStyle="bold"
         android:text="@string/change_pass"/>
 
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="@string/pls_ent_ori_code"/>
+        android:layout_marginTop="16dp"
+        app:passwordToggleEnabled="true">
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/et_ori_code"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"/>
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_ori_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pls_ent_ori_code"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="@string/pls_ent_new_code"/>
+        android:layout_marginTop="16dp"
+        app:passwordToggleEnabled="true">
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/et_new_code"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"/>
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_new_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pls_ent_new_code"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="@string/pls_conf_new_code"/>
+        android:layout_marginTop="16dp"
+        app:passwordToggleEnabled="true">
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/et_conf_new_code"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"/>
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_conf_new_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pls_conf_new_code"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -17,7 +17,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:contentScrim="?attr/colorPrimary"
@@ -80,7 +80,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="@string/username_" />
+                        android:text="@string/username_"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tv_username"
@@ -88,7 +90,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:gravity="center"
-                        android:text="-" />
+                        android:text="-"
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -102,7 +105,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="@string/nickname" />
+                        android:text="@string/nickname"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tv_nicknam"
@@ -110,7 +115,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:gravity="center"
-                        android:text="-" />
+                        android:text="-"
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -124,7 +130,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="@string/email" />
+                        android:text="@string/email"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tv_email"
@@ -132,7 +140,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:gravity="center"
-                        android:text="-" />
+                        android:text="-"
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -146,7 +155,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="@string/phone" />
+                        android:text="@string/phone"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tv_phone"
@@ -154,7 +165,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:gravity="center"
-                        android:text="-" />
+                        android:text="-"
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -168,7 +180,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="@string/intor" />
+                        android:text="@string/intor"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tv_intor"
@@ -176,37 +190,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:gravity="center"
-                        android:text="-" />
+                        android:text="-"
+                        android:textSize="18sp"/>
                 </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:showDividers="none" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/changeAvatar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:padding="2dp"
-                android:text="@string/change_avatar"
-                android:textColor="@color/light" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/changePassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:padding="2dp"
-                android:text="@string/change_pass"
-                android:textColor="@color/light" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

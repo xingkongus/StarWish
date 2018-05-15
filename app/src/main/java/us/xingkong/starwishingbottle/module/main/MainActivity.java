@@ -1,7 +1,9 @@
 package us.xingkong.starwishingbottle.module.main;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -19,14 +21,16 @@ import java.util.List;
 import butterknife.BindView;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.ViewPagerAdapter;
 import us.xingkong.starwishingbottle.base.BaseActivity;
+import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.setting.SettingActivity;
 
 public class MainActivity extends BaseActivity<MainContract.Presenter>
-        implements MainContract.View {
+        implements MainContract.View, EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.head_image)
     AppCompatImageView imageView;
@@ -65,11 +69,11 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
 
         fragments = new ArrayList<>();
 
-        fragments.add( WishListFrament.class);
-        fragments.add( MyWishFragment.class);
-        fragments.add( WishingFragment.class);
+        fragments.add(WishListFrament.class);
+        fragments.add(MyWishFragment.class);
+        fragments.add(WishingFragment.class);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),fragments,TITLES);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments, TITLES);
         viewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(viewPager);
 
@@ -80,6 +84,12 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
         BmobUpdateAgent.initAppVersion();
         BmobUpdateAgent.setUpdateOnlyWifi(false);
         BmobUpdateAgent.update(this);
+
+        if (!EasyPermissions.hasPermissions(MainActivity.this, Constants.PERMISSION_READ_PHONE_STATE)
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.need_phone_permission),
+                    0, Constants.PERMISSION_READ_PHONE_STATE);
+        }
     }
 
     @Override
@@ -109,5 +119,26 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
                 break;
         }
         return true;
+    }
+
+    /**
+     * 以下是关于EasyPermissions对权限的操作
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+
     }
 }

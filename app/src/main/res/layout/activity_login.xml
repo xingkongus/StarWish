@@ -1,87 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="40dp"
-    android:layout_marginEnd="40dp"
-    android:layout_marginTop="120dp"
-    android:layout_marginBottom="120dp"
-    app:cardCornerRadius="16dp"
-    android:elevation="10dp"
-    tools:context=".module.login.LoginActivity">
+    tools:context=".module.login.LoginActivity"
+    android:background="@color/register_purple">
 
-    <LinearLayout
-        android:padding="24dp"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:textSize="34sp"
-            android:textStyle="bold"/>
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="@string/login"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInputEditText2"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputEditText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:digits="@string/username_filter"
+                    android:hint="@string/pls_ent_acc"
+                    android:inputType="text" />
+
+                <requestFocus />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:passwordToggleEnabled="true">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
+                    android:hint="@string/pls_ent_code"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/et_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:hint="@string/pls_ent_acc"
-                        android:inputType="text"
-                        android:digits="@string/username_filter"/>
-                    <requestFocus />
-                </android.support.design.widget.TextInputLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/bt_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/login_blue"
+                android:text="@string/login"
+                android:textColor="@android:color/white" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInputLayout1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:passwordToggleEnabled="true">
+        </LinearLayout>
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/et_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/pls_ent_code"
-                        android:inputType="textPassword" />
-                </android.support.design.widget.TextInputLayout>
 
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/bt_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/login"
-            android:background="@color/login_blue"
-            android:textColor="@android:color/white"/>
-
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 
 
-</android.support.v7.widget.CardView>
+
+
+</android.support.constraint.ConstraintLayout>
 

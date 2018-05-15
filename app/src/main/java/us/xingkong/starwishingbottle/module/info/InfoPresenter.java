@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatButton;
+import android.view.View;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.starwishingbottle.base.BasePresenterImpl;
@@ -30,51 +33,86 @@ class InfoPresenter extends BasePresenterImpl implements InfoContarct.Presenter 
         this.mView.setPresenter(this);
     }
 
-
     @Override
-    public void updateInfo(User user, final String value, final TextView view) {
-        User us = new User();
-        us.setIntor(value);
-        us.update(user.getObjectId(), new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    view.setText(value);
-                    Snackbar.make(view, "修改成功", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    Snackbar.make(view, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    public void changePassword(String oriPass, String newPass, String newPassRe, final View view) {
+//        User user = BmobUser.getCurrentUser(User.class);
+//        if (newPass.equals(newPassRe) && !oriPass.equals(newPass)) {
+//            user.setPassword(newPass);
+//            user.update(new UpdateListener() {
+//                @Override
+//                public void done(BmobException e) {
+//                    if (e == null) {
+//                        new MaterialDialog.Builder(mView.getContext())
+//                                .title("修改成功")
+//                                .content("密码修改成功，可以用新密码进行登录啦")
+//                                .positiveText("ok")
+//                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                                    @Override
+//                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                        dialog.dismiss();
+//                                        new MaterialDialog.Builder(mView.getContext())
+//                                                .title("重新登陆")
+//                                                .content("修改密码后需要重新登陆")
+//                                                .positiveText("ok")
+//                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                                                    @Override
+//                                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                                        User.logOut();
+//                                                        ActivityCollector.finishAll();
+//                                                        mView.getActivity().startActivity(
+//                                                                new Intent(mView.getContext(), FirstActivity.class));
+//                                                    }
+//                                                }).cancelable(false).show();
+//                                    }
+//                                }).cancelable(false).show();
+//                        Snackbar.make(view, "密码修改成功，可以用新密码进行登录啦", Snackbar.LENGTH_SHORT).show();
+//                    } else {
+//                        Snackbar.make(view, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//        }
 
-    @Override
-    public void changePassword(String oriPass, String newPass, final AppCompatButton bt) {
-        User.updateCurrentUserPassword(oriPass, newPass, new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    Snackbar.make(bt, "密码修改成功，可以用新密码进行登录啦", Snackbar.LENGTH_SHORT).show();
-                    new MaterialDialog.Builder(mView.getContext())
-                            .title("重新登陆")
-                            .content("修改密码后需要重新登陆")
-                            .positiveText("ok")
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    User.logOut();
-                                    ActivityCollector.finishAll();
-                                    mView.getActivity().startActivity(
-                                            new Intent(mView.getContext(), FirstActivity.class));
-                                }
-                            }).cancelable(false).show();
-                } else {
-                    Snackbar.make(bt, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-                    e.printStackTrace();
+        if (newPass.equals(newPassRe)) {
+            User.updateCurrentUserPassword(oriPass, newPass, new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        Snackbar.make(view, "密码修改成功，可以用新密码进行登录啦", Snackbar.LENGTH_SHORT).show();
+                        new MaterialDialog.Builder(mView.getContext())
+                                .title("修改成功")
+                                .content("密码修改成功，可以用新密码进行登录啦")
+                                .positiveText("ok")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                        new MaterialDialog.Builder(mView.getContext())
+                                                .title("重新登陆")
+                                                .content("修改密码后需要重新登陆")
+                                                .positiveText("ok")
+                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                    @Override
+                                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                        User.logOut();
+                                                        ActivityCollector.finishAll();
+                                                        mView.getActivity().startActivity(
+                                                                new Intent(mView.getContext(), FirstActivity.class));
+                                                    }
+                                                }).cancelable(false).show();
+                                    }
+                                }).cancelable(false).show();
+
+                    } else {
+                        Snackbar.make(view, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            Snackbar.make(view, "两次密码不一致！", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
 

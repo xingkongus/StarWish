@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,6 +21,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -35,6 +37,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import butterknife.BindView;
@@ -46,8 +49,11 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;
+import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.EditTextDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
@@ -61,7 +67,8 @@ import xyz.sealynn.bmobmodel.model.User;
 /**
  * 用户信息
  */
-public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implements InfoContarct.View {
+public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
+        implements InfoContarct.View,EasyPermissions.PermissionCallbacks {
 
 
     //--------------------------------------------------------------------
@@ -102,21 +109,20 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
     TextView email;
     @BindView(R.id.tv_intor)
     TextView intor;
-    @BindView(R.id.changePassword)
-    AppCompatButton changePssword;
-    @BindView(R.id.changeAvatar)
-    AppCompatButton changeAvatar;
 
     private User user;
     private String id;
+    private Boolean isCurrentUser;
 
     @Override
     protected void initEvent(Bundle savedInstanceState) {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initViews() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         if (id == null) {
             init(null, new IllegalArgumentException("用户ID为空！"));
         } else {
@@ -174,7 +180,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
         headPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //changeAvatar(user);
+                changeAvatar(user);
             }
         });
 
@@ -183,26 +189,28 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
         progressDialog.setMessage("请稍等……");
         progressDialog.setCancelable(false);
         if (User.getCurrentUser(User.class) == null || !user.getObjectId().equals(User.getCurrentUser(User.class).getObjectId())) {
-            changePssword.setVisibility(View.GONE);
-            changeAvatar.setVisibility(View.GONE);
+            isCurrentUser = false;
+            //打开时判断是不是当前用户
         } else {
-            changeAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    changeAvatar(user);
-                }
-            });
-            changePssword.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("", "onClick: ----------");
-                    new ChangePassDialog(InfoActivity.this).show();
-                }
-            });
+            isCurrentUser = true;
+            invalidateOptionsMenu();    //重新加载Menu
             setListener("昵称", nickname, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    mPresenter.updateInfo(user, value, nickname);
+                    User us = new User();
+                    us.setNickname(value);
+                    us.update(user.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                nickname.setText(value);
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
 
                 @Override
@@ -213,7 +221,20 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
             setListener("电话号码", phone, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    mPresenter.updateInfo(user, value, phone);
+                    User us = new User();
+                    us.setMobilePhoneNumber(value);
+                    us.update(user.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                phone.setText(value);
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
 
                 @Override
@@ -224,7 +245,20 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
             setListener("简介", intor, false, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    mPresenter.updateInfo(user, value, intor);
+                    User us = new User();
+                    us.setIntor(value);
+                    us.update(user.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                intor.setText(value);
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
 
                 @Override
@@ -235,7 +269,20 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
             setListener("邮箱", email, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    mPresenter.updateInfo(user, value, email);
+                    User us = new User();
+                    us.setEmail(value);
+                    us.update(user.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                email.setText(value);
+                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
 
                 @Override
@@ -251,7 +298,8 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
         setText(user.getIntor(), intor);
     }
 
-    protected void setListener(final String key, final TextView value, final Boolean isSingle
+    @Override
+    public void setListener(final String key, final TextView value, final Boolean isSingle
             , final EditTextDialog.EditResult editResult) {
         value.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,9 +311,13 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
         });
     }
 
-    protected void setText(String text, TextView textView) {
-        if (text != null && text.length() > 0)
-            textView.setText(text);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (isCurrentUser != null)
+            if (isCurrentUser)
+                getMenuInflater().inflate(R.menu.menu_info, menu);
+        return true;
     }
 
     @Override
@@ -274,11 +326,20 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.change_password:
+                new ChangePassDialog(InfoActivity.this).show();
+                break;
         }
         return true;
     }
 
     protected void changeAvatar(User user) {
+        if (!EasyPermissions.hasPermissions(InfoActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE)
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            EasyPermissions.requestPermissions(InfoActivity.this, getString(R.string.need_permission),
+                    0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
+        }
+
         if (user == null) {
             Log.d("changeAvatar", "User is invaild!");
             return;
@@ -289,7 +350,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
         GetPictureDialog.GetPicture(this, 1, 2, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                new ChangePassDialog(InfoActivity.this).show();
             }
         });
     }
@@ -446,6 +507,35 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
         Snackbar.make(InfoActivity.this.findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void setText(String text, TextView textView) {
+        if (text != null && text.length() > 0)
+            textView.setText(text);
+    }
+
+    /**
+     * 以下是关于EasyPermissions对权限的操作
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
     class ChangePassDialog extends AppCompatDialog {
 
         @BindView(R.id.ok)
@@ -496,17 +586,13 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (confNewCode.getText().toString().trim()
-                            .equals(newCode.getText().toString().trim())) {
-                        mPresenter.changePassword(originalCode.getText().toString().trim()
-                                , confNewCode.getText().toString().trim(), changePssword);
-                    } else
-                        Snackbar.make(changePssword, "两次密码不一致！", Snackbar.LENGTH_SHORT).show();
+                    mPresenter.changePassword(originalCode.getText().toString().trim()
+                            , newCode.getText().toString().trim()
+                            , confNewCode.getText().toString().trim(), toolbarLayout);
                     ChangePassDialog.this.dismiss();
                 }
             });
+
         }
-
-
     }
 }
