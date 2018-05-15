@@ -8,18 +8,26 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,7 +35,10 @@ import com.bumptech.glide.request.RequestOptions;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
@@ -36,18 +47,21 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.R;
+import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.dialog.EditTextDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
+import us.xingkong.starwishingbottle.module.first.FirstActivity;
 import us.xingkong.starwishingbottle.module.main.MainActivity;
 import us.xingkong.starwishingbottle.module.setting.SettingActivity;
+import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.User;
 
 /**
  * 用户信息
  */
-public class InfoActivity extends AppCompatActivity {
+public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implements InfoContarct.View {
 
 
     //--------------------------------------------------------------------
@@ -72,28 +86,41 @@ public class InfoActivity extends AppCompatActivity {
     //--------------------------------------------------------------------
 
 
-    private Toolbar toolbar;
-    private AppCompatImageView headImg, headPic;
-    private CollapsingToolbarLayout toolbarLayout;
-    private TextView username, nickname, phone, email, intor;
-    private AppCompatButton changePssword, changeAvatar;
+    @BindView(R.id.head_image)
+    AppCompatImageView headImg;
+    @BindView(R.id.headPic)
+    AppCompatImageView headPic;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout toolbarLayout;
+    @BindView(R.id.tv_username)
+    TextView username;
+    @BindView(R.id.tv_nicknam)
+    TextView nickname;
+    @BindView(R.id.tv_phone)
+    TextView phone;
+    @BindView(R.id.tv_email)
+    TextView email;
+    @BindView(R.id.tv_intor)
+    TextView intor;
+    @BindView(R.id.changePassword)
+    AppCompatButton changePssword;
+    @BindView(R.id.changeAvatar)
+    AppCompatButton changeAvatar;
 
     private User user;
+    private String id;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+    protected void initEvent(Bundle savedInstanceState) {
 
+    }
 
-        initView();
-
-        String id = getIntent().getStringExtra(IntentKey_UserID);
-
+    @Override
+    protected void initViews() {
         if (id == null) {
             init(null, new IllegalArgumentException("用户ID为空！"));
         } else {
-            BmobQuery<User> query = new BmobQuery<User>();
+            BmobQuery<User> query = new BmobQuery<>();
             query.getObject(id, new QueryListener<User>() {
                 @Override
                 public void done(User user, BmobException e) {
@@ -103,21 +130,19 @@ public class InfoActivity extends AppCompatActivity {
         }
     }
 
-    protected void initView() {
-        toolbar = findViewById(R.id.toolbar);
-        headImg = findViewById(R.id.head_image);
-        headPic = findViewById(R.id.headPic);
-        toolbarLayout = findViewById(R.id.collapsing_toolbar);
-        username = findViewById(R.id.tv_username);
-        nickname = findViewById(R.id.tv_nicknam);
-        phone = findViewById(R.id.tv_phone);
-        email = findViewById(R.id.tv_email);
-        intor = findViewById(R.id.tv_intor);
-        changePssword = findViewById(R.id.changePassword);
-        changeAvatar = findViewById(R.id.changeAvatar);
+    @Override
+    protected void prepareData() {
+        id = getIntent().getStringExtra(IntentKey_UserID);
+    }
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    protected InfoContarct.Presenter createPresenter() {
+        return new InfoPresenter(this);
+    }
+
+    @Override
+    protected int bindLayout() {
+        return R.layout.activity_info;
     }
 
     protected void init(final User user, Exception e) {
@@ -153,7 +178,6 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("更新头像中");
         progressDialog.setMessage("请稍等……");
@@ -168,23 +192,17 @@ public class InfoActivity extends AppCompatActivity {
                     changeAvatar(user);
                 }
             });
+            changePssword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("", "onClick: ----------");
+                    new ChangePassDialog(InfoActivity.this).show();
+                }
+            });
             setListener("昵称", nickname, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    User us = new User();
-                    us.setNickname(value);
-                    us.update(user.getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                nickname.setText(value);
-                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
-                            } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    mPresenter.updateInfo(user, value, nickname);
                 }
 
                 @Override
@@ -195,20 +213,7 @@ public class InfoActivity extends AppCompatActivity {
             setListener("电话号码", phone, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    User us = new User();
-                    us.setMobilePhoneNumber(value);
-                    us.update(user.getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                phone.setText(value);
-                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
-                            } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    mPresenter.updateInfo(user, value, phone);
                 }
 
                 @Override
@@ -219,20 +224,7 @@ public class InfoActivity extends AppCompatActivity {
             setListener("简介", intor, false, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    User us = new User();
-                    us.setIntor(value);
-                    us.update(user.getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                intor.setText(value);
-                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
-                            } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    mPresenter.updateInfo(user, value, intor);
                 }
 
                 @Override
@@ -243,20 +235,7 @@ public class InfoActivity extends AppCompatActivity {
             setListener("邮箱", email, true, new EditTextDialog.EditResult() {
                 @Override
                 public void onOK(final String value) {
-                    User us = new User();
-                    us.setEmail(value);
-                    us.update(user.getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                email.setText(value);
-                                Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
-                            } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    mPresenter.updateInfo(user, value, email);
                 }
 
                 @Override
@@ -269,9 +248,7 @@ public class InfoActivity extends AppCompatActivity {
         setText(user.getNickname(), nickname);
         setText(user.getEmail(), email);
         setText(user.getMobilePhoneNumber(), phone);
-        setText(user.getIntor(), intor);//
-
-        //setListener("用户名",username);
+        setText(user.getIntor(), intor);
     }
 
     protected void setListener(final String key, final TextView value, final Boolean isSingle
@@ -341,9 +318,6 @@ public class InfoActivity extends AppCompatActivity {
         });
     }
 
-    protected void showMessage(String message) {
-        Snackbar.make(InfoActivity.this.findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -465,5 +439,74 @@ public class InfoActivity extends AppCompatActivity {
             Log.i("", "Uri Scheme:" + uri.getScheme());
         }
         return null;
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Snackbar.make(InfoActivity.this.findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    class ChangePassDialog extends AppCompatDialog {
+
+        @BindView(R.id.ok)
+        AppCompatButton ok;
+        @BindView(R.id.cancel)
+        AppCompatButton cancel;
+        @BindView(R.id.et_ori_code)
+        AppCompatEditText originalCode;
+        @BindView(R.id.et_new_code)
+        AppCompatEditText newCode;
+        @BindView(R.id.et_conf_new_code)
+        AppCompatEditText confNewCode;
+
+        public ChangePassDialog(Context context) {
+            super(context);
+        }
+
+        public ChangePassDialog(Context context, int theme) {
+            super(context, theme);
+        }
+
+        protected ChangePassDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+            super(context, cancelable, cancelListener);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_change_pass);
+            ButterKnife.bind(this);
+
+            Log.d("", "onCreate: ==========");
+
+            //设置窗口大小
+            Window dialogWindow = getWindow();
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            DisplayMetrics d = this.getContext().getResources().getDisplayMetrics();
+            lp.width = (int) (d.widthPixels * 0.95f);
+            dialogWindow.setAttributes(lp);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ChangePassDialog.this.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (confNewCode.getText().toString().trim()
+                            .equals(newCode.getText().toString().trim())) {
+                        mPresenter.changePassword(originalCode.getText().toString().trim()
+                                , confNewCode.getText().toString().trim(), changePssword);
+                    } else
+                        Snackbar.make(changePssword, "两次密码不一致！", Snackbar.LENGTH_SHORT).show();
+                    ChangePassDialog.this.dismiss();
+                }
+            });
+        }
+
+
     }
 }

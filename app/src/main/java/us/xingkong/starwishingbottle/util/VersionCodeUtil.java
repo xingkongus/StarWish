@@ -33,7 +33,7 @@ public class VersionCodeUtil {
      * @param context 上下文
      * @return
      */
-    public static String getVerName(Context context) {
+    public static String getVersionName(Context context) {
         String verName = "";
         try {
             verName = context.getPackageManager().

@@ -4,39 +4,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:text="Title"/>
+        android:text="@string/change_pass"/>
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/key"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="key"/>
+        android:text="@string/pls_ent_ori_code"/>
 
     <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/value"
+        android:id="@+id/et_ori_code"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:maxLines="1"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/pls_ent_new_code"/>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/et_new_code"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/pls_conf_new_code"/>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/et_conf_new_code"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:gravity="right">
+        android:gravity="end">
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/cancel"
             android:backgroundTint="@color/light"
@@ -52,6 +82,4 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
-
 </LinearLayout>

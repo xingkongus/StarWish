@@ -24,7 +24,7 @@ public class AboutActivity extends MaterialAboutActivity {
     @Override
     protected MaterialAboutList getMaterialAboutList(@NonNull Context context) {
 
-        MaterialAboutCard version = new MaterialAboutCard.Builder()
+        MaterialAboutCard author = new MaterialAboutCard.Builder()
                 .title("Author")
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text("@SeaLynn0").build())
@@ -32,8 +32,17 @@ public class AboutActivity extends MaterialAboutActivity {
                         .text("@Hansin").build())
                 .build();
 
+        MaterialAboutCard version = new MaterialAboutCard.Builder()
+                .title("AppInfo")
+                .addItem(new MaterialAboutActionItem.Builder().text("VersionCode")
+                        .subText(VersionCodeUtil.getVersionCode(this) + "").build())
+                .addItem(new MaterialAboutActionItem.Builder().text("VersionName")
+                        .subText(VersionCodeUtil.getVersionName(this)).build())
+                .build();
+
         return new MaterialAboutList.Builder()
                 .addCard(version)
+                .addCard(author)
                 .build(); // This creates an empty screen, add cards with .addCard()
     }
 

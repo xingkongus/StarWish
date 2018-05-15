@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/library"
-        android:background="@android:color/transparent"
+        android:background="?android:attr/selectableItemBackground"
         android:textSize="18sp"/>
 
     <android.support.v7.widget.AppCompatButton
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/camera"
-        android:background="@android:color/transparent"
+        android:background="?android:attr/selectableItemBackground"
         android:textSize="18sp"/>
 
     <android.support.v7.widget.AppCompatButton
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/none"
-        android:background="@android:color/transparent"
+        android:background="?android:attr/selectableItemBackground"
         android:textSize="18sp"/>
 
 </LinearLayout>

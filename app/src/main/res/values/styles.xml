@@ -43,7 +43,7 @@
     <!--<style name="AppTheme.First" parent="AppTheme.Full">-->
     <!--<item name="android:windowBackground">@drawable/blowball_dandelion_dandelion_seed_54300</item>-->
     <!--</style>-->
-    <style name="AppTheme.About" parent="Theme.Mal.Light">
+    <style name="AppTheme.About" parent="Theme.Mal.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

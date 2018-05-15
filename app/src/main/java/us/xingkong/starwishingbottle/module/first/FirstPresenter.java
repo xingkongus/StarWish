@@ -11,7 +11,7 @@ class FirstPresenter extends BasePresenterImpl implements FirstContract.Presente
 
     FirstContract.View mView;
 
-    public FirstPresenter(FirstContract.View mView) {
+    FirstPresenter(FirstContract.View mView) {
         this.mView = mView;
         this.mView.setPresenter(this);
     }
