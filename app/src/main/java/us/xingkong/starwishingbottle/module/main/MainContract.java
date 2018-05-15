@@ -20,6 +20,7 @@ interface MainContract {
     interface Presenter extends BasePresenter{
         void getBottle(BmobQuery.CachePolicy policy, FindListener<Message> listener);
         void loadMyBottles(BmobQuery.CachePolicy policy, FindListener<Message> listener);
+        void getStarBottles(BmobQuery.CachePolicy policy, FindListener<Message> listener);
     }
 
 

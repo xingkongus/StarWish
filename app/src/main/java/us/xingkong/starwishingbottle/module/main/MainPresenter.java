@@ -1,5 +1,7 @@
 package us.xingkong.starwishingbottle.module.main;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.starwishingbottle.base.BasePresenterImpl;
 import xyz.sealynn.bmobmodel.model.Message;
+import xyz.sealynn.bmobmodel.model.Reversion;
 import xyz.sealynn.bmobmodel.model.User;
 
 /**
@@ -46,5 +49,43 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
         query.order("-updatedAt");
         query.setCachePolicy(policy);
         query.findObjects(listener);
+    }
+
+    @Override
+    public void getStarBottles(BmobQuery.CachePolicy policy, final FindListener<Message> listener) {
+
+
+        BmobQuery<Reversion> query = new BmobQuery<>();
+        query.addWhereEqualTo("user",User.getCurrentUser());
+        query.findObjects(new FindListener<Reversion>() {
+            @Override
+            public void done(List<Reversion> list, BmobException e) {
+                if(e != null){
+                    e.printStackTrace();
+                    Log.d("getStarBottles",e.toString());
+                    listener.done(null,e);
+                }else if(list == null){
+                    BmobException e2 = new BmobException("列表为null");
+                    e2.printStackTrace();
+                    Log.d("getStarBottles",e2.toString());
+                    listener.done(null,e2);
+                } else {
+                    ArrayList<String> messagesId = new ArrayList<>();
+                    for(int i = 0;i < list.size();i++) {
+                        messagesId.add(list.get(i).getMessage().getObjectId());
+                    }
+
+                    BmobQuery<Message> query1 = new BmobQuery<>();
+                    query1.addWhereContainedIn("objectId",messagesId);
+                    query1.findObjects(new FindListener<Message>() {
+                        @Override
+                        public void done(List<Message> list, BmobException e) {
+                            listener.done(list,e);
+                        }
+                    });
+                }
+            }
+        });
+
     }
 }
