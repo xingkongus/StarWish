@@ -129,7 +129,7 @@
     <string name="action_settings">Settings</string>
     <string name="check_update">检查更新</string>
     <string name="userinfo">个人资料</string>
-    <string name="change_info">编辑个人资料</string>
+    <string name="change_info">个人资料</string>
     <string name="pls_conf_code">请确认密码</string>
     <string name="email">邮箱</string>
     <string name="username_">用户名</string>

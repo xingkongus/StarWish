@@ -112,7 +112,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter> implement
 
     @Override
     protected void initEvent(Bundle savedInstanceState) {
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
