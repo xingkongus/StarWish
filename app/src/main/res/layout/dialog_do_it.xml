@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:gravity="center|left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="20dp"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="@string/come_true"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.6">
+        <!--<android.support.v7.widget.AppCompatTextView-->
+            <!--android:padding="6dp"-->
+            <!--android:gravity="center|left"-->
+            <!--android:text="@string/message"-->
+            <!--android:textSize="16sp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/message"
+            android:padding="12dp"
+            android:hint="@string/message_hint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/dialog_do_it_background"
+            android:gravity="top"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:padding="12dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_add_photo" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/add_photo"
+                android:textSize="24sp"
+                android:layout_weight="1"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/picture"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_action_add_dark"
+                android:scaleType="centerCrop"
+                android:layout_gravity="end"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/cancel"
+            android:backgroundTint="@color/light"
+            android:text="@string/cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/ok"
+            android:textColor="@color/light"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

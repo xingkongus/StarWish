@@ -105,7 +105,7 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
             actionBar.setTitle("许愿");
         }
 
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.show();

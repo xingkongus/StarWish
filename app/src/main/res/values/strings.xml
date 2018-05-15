@@ -143,4 +143,10 @@
     <string name="title_activity_wishing">WishingActivity</string>
     <string name="pls_ent_nik">请输入昵称</string>
     <string name="username_filter">0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM</string>
+    <string name="do_it">帮Ta实现</string>
+    <string name="message">留言</string>
+    <string name="message_hint">帮助Ta实现愿望，留下你想说的话。</string>
+    <string name="come_true">美梦成真</string>
+    <string name="noneEx">空空如也</string>
+    <string name="like">喜欢</string>
 </resources>

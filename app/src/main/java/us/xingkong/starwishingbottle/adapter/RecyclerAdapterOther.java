@@ -23,10 +23,11 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
 import us.xingkong.starwishingbottle.R;
-import us.xingkong.starwishingbottle.module.wish.WishingActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
+import us.xingkong.starwishingbottle.module.wish.WishingActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.Message;
+import xyz.sealynn.bmobmodel.model.Reversion;
 import xyz.sealynn.bmobmodel.model.User;
 
 /**
@@ -34,45 +35,54 @@ import xyz.sealynn.bmobmodel.model.User;
  * <p>
  * Email：sealynndev@gmail.com
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOther.ViewHolder> {
 
     private Context context;
 
-    private List<Message> messages;
+    private List<Reversion> reversions;
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    private Like like;
+
+    public void setMessages(List<Reversion> reversions) {
+        this.reversions = reversions;
     }
 
-    public RecyclerAdapter(List<Message> messages, Context context) {
-        this.messages = messages;
+    public RecyclerAdapterOther(List<Reversion> reversions, Context context,Like like) {
+        this.reversions = reversions;
         this.context = context;
+        this.like = like;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_wish, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_wish_other, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder,int position) {
-        final Message message = messages.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder,final int position) {
+        final Reversion message = reversions.get(position);
 
+        if(like.shouldShowLike(position)){
+            holder.like.setVisibility(View.VISIBLE);
+        }else{
+            holder.like.setVisibility(View.GONE);
+        }
+        holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                like.iLikeIt(position);
+            }
+        });
         holder.preview.setText(message.getContent());
         if (message.getPicture() != null && message.getPicture().getUrl() != null)
             Glide.with(context)
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.blowball_dandelion_dandelion_seed_54300))
-                    .into(holder.picture);
-        else
-            Glide.with(context)
-                    .load(R.drawable.blowball_dandelion_dandelion_seed_54300)
-                    .transition(new DrawableTransitionOptions().crossFade())
-                    .into(holder.picture);
+                    .into(GlideImageLoader.FitXY(holder.picture,R.drawable.blowball_dandelion_dandelion_seed_54300));
 
         BmobQuery<User> q = new BmobQuery<>();
 
@@ -100,15 +110,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
-        if(!message.isFinished())
-            holder.isFinished.setVisibility(View.GONE);
-        else
-            holder.isFinished.setVisibility(View.VISIBLE);
-
-        if(message.getPublished())
-            holder.isPrivate.setVisibility(View.GONE);
-        else
-            holder.isPrivate.setVisibility(View.VISIBLE);
 
         holder.date.setText(message.getUpdatedAt());
         holder.userinfo.setOnClickListener(new View.OnClickListener() {
@@ -118,27 +119,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WishingActivity.showWishing(context,message,(message.getFinished() == null?null:message.getFinished().getObjectId()));
-            }
-        });
+//        holder.cardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                WishingActivity.showWishing(context,message,(message.isFinished()));
+//            }
+//        });
 
     }
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return reversions.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
-        AppCompatImageView picture,headPic,isFinished,isPrivate;
+        AppCompatImageView picture,headPic;
         AppCompatTextView preview,user,date;
         LinearLayout userinfo;
-
+        AppCompatButton like;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -149,12 +150,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             picture = itemView.findViewById(R.id.picture);
             headPic = itemView.findViewById(R.id.headPic);
-            isFinished = itemView.findViewById(R.id.isfinisher);
-            isPrivate = itemView.findViewById(R.id.isprivate);
 
             userinfo = itemView.findViewById(R.id.part_user);
-
+            like = itemView.findViewById(R.id.like);
         }
     }
 
+
+    public interface Like {
+        void iLikeIt(int position);
+        boolean shouldShowLike(int position);
+    }
 }

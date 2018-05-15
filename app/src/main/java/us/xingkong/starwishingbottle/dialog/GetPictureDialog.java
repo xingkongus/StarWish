@@ -116,4 +116,5 @@ public class GetPictureDialog extends AppCompatDialog {
         getPictureDialog.setNoneListener(noneListener);
         getPictureDialog.show();
     }
+
 }

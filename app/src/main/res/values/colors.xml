@@ -13,4 +13,5 @@
 
     <color name="light">#dcffffff</color>
     <color name="dark">#80597764</color>
+    <color name="cardview_grey">#ebebeb</color>
 </resources>

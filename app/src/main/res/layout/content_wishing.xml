@@ -19,9 +19,9 @@
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view"
-            app:cardCornerRadius="10dp"
-            app:elevation="5dp"
-            android:layout_margin="16dp">
+            app:cardCornerRadius="5dp"
+            app:elevation="1dp"
+            android:layout_margin="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:id="@+id/preview"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/cardview_dark_background"
@@ -106,9 +106,29 @@
                     android:singleLine="true"
                     android:text="Date"/>
 
+                <LinearLayout
+                    android:paddingRight="6dp"
+                    android:paddingBottom="6dp"
+                    android:gravity="right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.AppCompatButton
+                        android:visibility="invisible"
+                        android:id="@+id/do_it"
+                        android:textColor="@color/light"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/do_it"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
+        <include layout="@layout/content_wishing_ex"/>
+
     </LinearLayout>
 
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:id="@+id/part_other"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:gravity="center|right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <android.support.v7.widget.AppCompatImageView
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_other"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <android.support.v7.widget.AppCompatImageView
+            android:src="@drawable/ic_action_other_zh_cn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/wishing_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/none"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/noneEx"/>
+
+</LinearLayout>

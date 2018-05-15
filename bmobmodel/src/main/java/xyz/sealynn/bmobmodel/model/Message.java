@@ -99,4 +99,8 @@ public class Message extends BmobObject {
             });
         }
     }
+
+    public Boolean isFinished() {
+        return (getFinished() != null && getFinished().getObjectId() != null && getFinished().getObjectId().length() > 0);
+    }
 }
