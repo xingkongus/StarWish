@@ -123,8 +123,8 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         progressDialog.setMessage("请稍等……");
         progressDialog.setCancelable(false);
 
-        if (!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE)
-                &&Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if ((!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                &&Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
             EasyPermissions.requestPermissions(EditMsgActivity.this, getString(R.string.need_permission),
                     0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
         }

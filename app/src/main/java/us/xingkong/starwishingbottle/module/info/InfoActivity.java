@@ -334,8 +334,8 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
     }
 
     protected void changeAvatar(User user) {
-        if (!EasyPermissions.hasPermissions(InfoActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE)
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if ((!EasyPermissions.hasPermissions(InfoActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
             EasyPermissions.requestPermissions(InfoActivity.this, getString(R.string.need_permission),
                     0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
         }

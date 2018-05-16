@@ -80,8 +80,8 @@ public class FirstFragment extends BaseFragment<FirstContract.Presenter>
                 @Override
                 public void onClick(View v) {
                     new MaterialDialog.Builder(getContext())
-                            .title("免责声明")
-                            .content(R.string.large_text)
+                            .title("关于星愿APP免责声明")
+                            .content(R.string.duty_text)
                             .positiveText("同意")
                             .negativeText("不同意")
                             .onPositive(new MaterialDialog.SingleButtonCallback() {

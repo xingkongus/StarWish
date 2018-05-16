@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
@@ -22,8 +19,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,8 +29,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,26 +45,26 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.RecyclerAdapterOther;
+import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.DoItDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
-import us.xingkong.visionlibrary.operator.Blur;
-import us.xingkong.visionlibrary.operator.Light;
-import vision.image.VisionImage;
 import xyz.sealynn.bmobmodel.model.Message;
 import xyz.sealynn.bmobmodel.model.Reversion;
 import xyz.sealynn.bmobmodel.model.User;
 
-public class WishingActivity extends AppCompatActivity {
+public class WishingActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
-    public static void showWishing(Context context,Message message,String isFinishedID){
-        Intent intent = new Intent(context,WishingActivity.class);
-        intent.putExtra("wishing",message.getObjectId());
-        intent.putExtra("isfinished",isFinishedID);
+    public static void showWishing(Context context, Message message, String isFinishedID) {
+        Intent intent = new Intent(context, WishingActivity.class);
+        intent.putExtra("wishing", message.getObjectId());
+        intent.putExtra("isfinished", isFinishedID);
         context.startActivity(intent);
     }
 
@@ -78,7 +73,7 @@ public class WishingActivity extends AppCompatActivity {
     private String isFinishedID;
     private Toolbar toolbar;
     private FloatingActionButton fab;
-    private User owner,me;
+    private User owner, me;
     private DoItDialog doItDialog;
     private ProgressDialog progressDialog;
     private RecyclerAdapterOther adapter;
@@ -131,12 +126,15 @@ public class WishingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishing);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("愿望");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        ActionBar actionBar = getSupportActionBar();
+        Log.d("ctionBar", String.valueOf(actionBar == null));
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,77 +148,81 @@ public class WishingActivity extends AppCompatActivity {
 
         String wishing = getIntent().getStringExtra("wishing");
         isFinishedID = getIntent().getStringExtra("isfinished");
-        if(isFinishedID != null && isFinishedID.length() > 0)
+        if (isFinishedID != null && isFinishedID.length() > 0)
             isFinished = true;
         else
             isFinished = false;
 
-        if(!isFinished)
-        {
+        if (!isFinished) {
             part_best.setVisibility(View.GONE);
         }
-        if(wishing == null){
-            init(null,new IllegalArgumentException("Wishing为空！"));
-        }else {
+        if (wishing == null) {
+            init(null, new IllegalArgumentException("Wishing为空！"));
+        } else {
             BmobQuery<Message> query = new BmobQuery<Message>();
             query.getObject(wishing, new QueryListener<Message>() {
                 @Override
                 public void done(Message message, BmobException e) {
-                    init(message,e);
+                    init(message, e);
                 }
             });
         }
 
         me = User.getCurrentUser(User.class);
 
+        if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
+                    0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
+        }
+
     }
 
-    protected void init(final Message message, Exception e){
+    protected void init(final Message message, Exception e) {
         this.message = message;
-        if(e != null){
+        if (e != null) {
             e.printStackTrace();
-            Log.d(this.toString(),e.toString());
+            Log.d(this.toString(), e.toString());
             return;
         }
 
-        if(message == null)
+        if (message == null)
             return;
 
-        if(message.getPicture() != null && message.getPicture().getUrl() != null)
+        if (message.getPicture() != null && message.getPicture().getUrl() != null)
             Glide.with(this).load(message.getPicture().getUrl())
                     .apply(RequestOptions.bitmapTransform(new BlurTransformation(13)))
                     .transition(new DrawableTransitionOptions().crossFade())
                     .into(headImg);
 
-        if(message.getUser() != null)
-        {
+        if (message.getUser() != null) {
             BmobQuery<User> query = new BmobQuery<>();
             query.getObject(message.getUser().getObjectId(), new QueryListener<User>() {
 
                 @Override
                 public void done(User user, BmobException e) {
-                if(e != null){
-                    e.printStackTrace();
-                    Log.d("show Wishing",e.toString());
-                }else if(user == null){
-                    Log.d("show Wishing","User is null");
-                }else{
-                    owner = user;
-                    refresh();
-                }
+                    if (e != null) {
+                        e.printStackTrace();
+                        Log.d("show Wishing", e.toString());
+                    } else if (user == null) {
+                        Log.d("show Wishing", "User is null");
+                    } else {
+                        owner = user;
+                        refresh();
+                    }
                 }
             });
             part_user.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    InfoActivity.showUserInfo(WishingActivity.this,message.getUser());
+                    InfoActivity.showUserInfo(WishingActivity.this, message.getUser());
                 }
             });
         }
 
-        if(!message.isFinished())
+        if (!message.isFinished())
             isfinisher.setVisibility(View.GONE);
-        if(message.getPublished())
+        if (message.getPublished())
             isprivate.setVisibility(View.GONE);
 
         if (message.getPicture() != null && message.getPicture().getUrl() != null) {
@@ -228,7 +230,7 @@ public class WishingActivity extends AppCompatActivity {
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(GlideImageLoader.FitXY(picture,R.id.action_settings));
+                    .into(GlideImageLoader.FitXY(picture, R.id.action_settings));
         }
         progressDialog = new ProgressDialog(WishingActivity.this);
         progressDialog.setTitle("正在提交");
@@ -244,11 +246,11 @@ public class WishingActivity extends AppCompatActivity {
                 Reversion.submit(me, message, msg, imageFile, new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
-                        if(e != null) {
+                        if (e != null) {
                             e.printStackTrace();
-                            Toast.makeText(WishingActivity.this,"提交失败\n" + e.toString(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WishingActivity.this, "提交失败\n" + e.toString(), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(WishingActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WishingActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                         }
                         updateDoit();
                         updateFab();
@@ -287,22 +289,21 @@ public class WishingActivity extends AppCompatActivity {
         updateDoit();
     }
 
-    void initBest(){
-        if(this.message == null || this.message.getFinished() == null || message.getFinished().getObjectId() == null || message.getFinished().getObjectId().length() == 0)
-        {
+    void initBest() {
+        if (this.message == null || this.message.getFinished() == null || message.getFinished().getObjectId() == null || message.getFinished().getObjectId().length() == 0) {
             return;
         }
         BmobQuery<Reversion> query = new BmobQuery<>();
         query.getObject(message.getFinished().getObjectId(), new QueryListener<Reversion>() {
             @Override
             public void done(final Reversion reversion, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d("initBest",e.toString());
-                }else if(reversion != null){
+                    Log.d("initBest", e.toString());
+                } else if (reversion != null) {
 
                     setBest(reversion);
-                }else {
+                } else {
                     part_best.setVisibility(View.GONE);
                 }
             }
@@ -316,7 +317,7 @@ public class WishingActivity extends AppCompatActivity {
         part_best.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoActivity.showUserInfo(WishingActivity.this,reversion.getUser());
+                InfoActivity.showUserInfo(WishingActivity.this, reversion.getUser());
             }
         });
         if (reversion.getPicture() != null && reversion.getPicture().getUrl() != null) {
@@ -324,16 +325,16 @@ public class WishingActivity extends AppCompatActivity {
                     .load(reversion.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(GlideImageLoader.FitXY(pictureBest,R.id.action_settings));
+                    .into(GlideImageLoader.FitXY(pictureBest, R.id.action_settings));
         }
         BmobQuery<User> q = new BmobQuery<>();
         q.getObject(reversion.getUser().getObjectId(), new QueryListener<User>() {
             @Override
             public void done(User user, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d(this.toString(),e.toString());
-                }else{
+                    Log.d(this.toString(), e.toString());
+                } else {
                     tv_user_best.setText(user.getNicknameOrUsername());
                     if (user != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)
                         GlideImageLoader.Circle(Glide.with(WishingActivity.this)
@@ -352,9 +353,9 @@ public class WishingActivity extends AppCompatActivity {
 
     }
 
-    void initOther(){
+    void initOther() {
 
-        if(message == null)
+        if (message == null)
             return;
 
         data = new ArrayList<>();
@@ -380,13 +381,13 @@ public class WishingActivity extends AppCompatActivity {
                         message.update(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
-                                if(e == null) {
+                                if (e == null) {
                                     setBest(message.getFinished());
                                     refreshOther();
-                                }else{
+                                } else {
                                     e.printStackTrace();
-                                    Log.d("iLikeIt",e.toString());
-                                    Toast.makeText(WishingActivity.this,"标记失败\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                                    Log.d("iLikeIt", e.toString());
+                                    Toast.makeText(WishingActivity.this, "标记失败\n" + e.toString(), Toast.LENGTH_SHORT).show();
                                 }
                                 recyclerView.setEnabled(true);
                             }
@@ -408,24 +409,24 @@ public class WishingActivity extends AppCompatActivity {
         refreshOther();
     }
 
-    void refreshOther(){
+    void refreshOther() {
         BmobQuery<Reversion> query = new BmobQuery<>();
-        query.addWhereEqualTo("message",message);
-        query.addWhereEqualTo("finished",true);
+        query.addWhereEqualTo("message", message);
+        query.addWhereEqualTo("finished", true);
         query.findObjects(new FindListener<Reversion>() {
             @Override
             public void done(List<Reversion> list, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d("initOther",e.toString());
+                    Log.d("initOther", e.toString());
                     return;
                 }
-                if(list != null && list.size() > 0){
-                    if(isFinished){
+                if (list != null && list.size() > 0) {
+                    if (isFinished) {
 
-                        for(int i = 0;i < list.size();i++){
+                        for (int i = 0; i < list.size(); i++) {
                             // 移除最佳
-                            if(list.get(i).getObjectId().equals(isFinishedID)){
+                            if (list.get(i).getObjectId().equals(isFinishedID)) {
                                 list.remove(i);
                                 break;
                             }
@@ -435,7 +436,7 @@ public class WishingActivity extends AppCompatActivity {
                     data = list;
                     adapter.setMessages(list);
                     adapter.notifyDataSetChanged();
-                    if(list.size() == 0)
+                    if (list.size() == 0)
                         none.setVisibility(View.VISIBLE);
                     else
                         none.setVisibility(View.GONE);
@@ -444,8 +445,8 @@ public class WishingActivity extends AppCompatActivity {
         });
     }
 
-    protected void refresh(){
-        if(owner == null)
+    protected void refresh() {
+        if (owner == null)
             return;
         User user = owner;
         String username = user.getNicknameOrUsername();
@@ -466,36 +467,36 @@ public class WishingActivity extends AppCompatActivity {
         tv_user.setText(username);
     }
 
-    protected void starOrUnstar(){
+    protected void starOrUnstar() {
         fab.setEnabled(false);
         BmobQuery<Reversion> query = new BmobQuery<>();
-        query.addWhereEqualTo("user",me);
-        query.addWhereEqualTo("message",message);
+        query.addWhereEqualTo("user", me);
+        query.addWhereEqualTo("message", message);
         query.setLimit(1);
         query.findObjects(new FindListener<Reversion>() {
             @Override
             public void done(List<Reversion> list, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d(this.toString(),e.toString());
+                    Log.d(this.toString(), e.toString());
                     fab.setEnabled(true);
-                }else if(list != null && list.size() > 0 ){
-                    if(list.get(0).getFinished()){
+                } else if (list != null && list.size() > 0) {
+                    if (list.get(0).getFinished()) {
                         updateFab();
                         return;
                     }
                     list.get(0).delete(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            if(e != null){
+                            if (e != null) {
                                 e.printStackTrace();
-                                Log.d(this.toString(),e.toString());
+                                Log.d(this.toString(), e.toString());
                             }
                             updateFab();
                         }
                     });
 
-                }else {
+                } else {
                     Reversion reversion = new Reversion();
                     reversion.setMessage(message);
                     reversion.setUser(me);
@@ -503,9 +504,9 @@ public class WishingActivity extends AppCompatActivity {
                     reversion.save(new SaveListener<String>() {
                         @Override
                         public void done(String s, BmobException e) {
-                            if(e != null){
+                            if (e != null) {
                                 e.printStackTrace();
-                                Log.d(this.toString(),e.toString());
+                                Log.d(this.toString(), e.toString());
                             }
                             updateFab();
                         }
@@ -516,39 +517,39 @@ public class WishingActivity extends AppCompatActivity {
 
     }
 
-    protected void updateDoit(){
-        if(message == null || me == null)
+    protected void updateDoit() {
+        if (message == null || me == null)
             return;
 
-        if(message.getUser().getObjectId().equals(me.getObjectId())){
+        if (message.getUser().getObjectId().equals(me.getObjectId())) {
             doIt.setVisibility(View.GONE);
             return;
         }
         BmobQuery<Reversion> query = new BmobQuery<>();
-        query.addWhereEqualTo("message",message);
-        query.addWhereEqualTo("user",me);
+        query.addWhereEqualTo("message", message);
+        query.addWhereEqualTo("user", me);
         query.setLimit(1);
         query.findObjects(new FindListener<Reversion>() {
             @Override
             public void done(List<Reversion> list, BmobException e) {
                 if (e != null) {
                     e.printStackTrace();
-                    Log.d("updateDoit",e.toString());
-                }else if(list.size() > 0 && list.get(0).getFinished()) {
+                    Log.d("updateDoit", e.toString());
+                } else if (list.size() > 0 && list.get(0).getFinished()) {
                     doIt.setVisibility(View.GONE);
-                }else {
+                } else {
                     doIt.setVisibility(View.VISIBLE);
                 }
             }
         });
     }
 
-    protected void updateFab(){
-        if(message == null || me == null)
+    protected void updateFab() {
+        if (message == null || me == null)
             return;
         fab.setEnabled(false);
 
-        if(message.getUser().getObjectId().equals(me.getObjectId())){
+        if (message.getUser().getObjectId().equals(me.getObjectId())) {
             fab.setVisibility(View.GONE);
             return;
         } else {
@@ -556,27 +557,33 @@ public class WishingActivity extends AppCompatActivity {
         }
 
         BmobQuery<Reversion> query = new BmobQuery<>();
-        query.addWhereEqualTo("user",me);
-        query.addWhereEqualTo("message",message);
+        query.addWhereEqualTo("user", me);
+        query.addWhereEqualTo("message", message);
         query.setLimit(1);
         query.findObjects(new FindListener<Reversion>() {
             @Override
             public void done(List<Reversion> list, BmobException e) {
                 fab.setEnabled(true);
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d(this.toString(),e.toString());
-                }else if(list != null && list.size() > 0 ){
+                    Log.d(this.toString(), e.toString());
+                } else if (list != null && list.size() > 0) {
                     fab.setImageResource(R.drawable.ic_action_like);
-                    if(message.isFinished())
+                    if (message.isFinished())
                         fab.setEnabled(false);
-                }else {
+                } else {
                     fab.setImageResource(R.drawable.ic_action_unlike);
                 }
             }
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
     }
 
     @Override
@@ -611,6 +618,29 @@ public class WishingActivity extends AppCompatActivity {
 
                 doItDialog.setImageFile(file);
             }
+        }
+    }
+
+    /**
+     * 以下是关于EasyPermissions对权限的操作
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
         }
     }
 
