@@ -1,5 +1,7 @@
 package us.xingkong.starwishingbottle.module.register;
 
+import android.net.Uri;
+
 import us.xingkong.starwishingbottle.base.BasePresenter;
 import us.xingkong.starwishingbottle.base.BaseView;
 
@@ -17,6 +19,6 @@ interface RegisterContract {
     }
 
     interface Presenter extends BasePresenter {
-        void register(String username, String nickname, String password, String passwordRe);
+        void register(String username, String nickname, String password, String passwordRe,Uri data);
     }
 }

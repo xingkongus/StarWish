@@ -1,5 +1,6 @@
 package us.xingkong.starwishingbottle.module.register;
 
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ class RegisterPresenter extends BasePresenterImpl implements RegisterContract.Pr
     }
 
     @Override
-    public void register(String username, String nickname, String password, String passwordRe) {
+    public void register(String username, String nickname, String password, String passwordRe,Uri data) {
         mView.freeze();
 
         try {

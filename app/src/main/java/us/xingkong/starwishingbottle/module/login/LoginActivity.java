@@ -29,7 +29,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
             @Override
             public void onClick(View v) {
                 mPresenter.login(username.getText().toString().trim(),
-                        password.getText().toString().trim());
+                        password.getText().toString().trim(),LoginActivity.this.getIntent().getData());
             }
         });
     }

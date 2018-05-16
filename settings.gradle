@@ -1,1 +1,1 @@
-include ':app', ':bmobmodel', ':visionlibrary'
+include ':app', ':bmobmodel', ':visionlibrary', ':qrcodemaker'

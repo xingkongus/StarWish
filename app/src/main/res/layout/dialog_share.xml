@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:background="@drawable/dialog_do_it_background"
+        android:id="@+id/img_QRcode"
+        android:src="@drawable/like"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"/>
+
+    <LinearLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="right|bottom">
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_save"
+            android:backgroundTint="@color/light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"/>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_share"
+            android:textColor="@color/light"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share"/>
+    </LinearLayout>
+
+</LinearLayout>

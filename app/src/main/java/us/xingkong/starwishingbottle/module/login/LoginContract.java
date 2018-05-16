@@ -1,5 +1,7 @@
 package us.xingkong.starwishingbottle.module.login;
 
+import android.net.Uri;
+
 import us.xingkong.starwishingbottle.base.BasePresenter;
 import us.xingkong.starwishingbottle.base.BaseView;
 
@@ -16,6 +18,6 @@ interface LoginContract {
     }
 
     interface Presenter extends BasePresenter{
-        void login(String username,String password);
+        void login(String username,String password,Uri data);
     }
 }

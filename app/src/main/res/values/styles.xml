@@ -37,6 +37,7 @@
     <style name="AppTheme.Register" parent="AppTheme.Full">
         <item name="android:windowBackground">@color/login_blue</item>
     </style>
+
     <style name="AppTheme.Login" parent="AppTheme.Full">
         <item name="android:windowBackground">@color/register_purple</item>
     </style>

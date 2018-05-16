@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -52,6 +53,7 @@ import us.xingkong.starwishingbottle.adapter.RecyclerAdapterOther;
 import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.DoItDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
+import us.xingkong.starwishingbottle.dialog.ShareDIalog;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
@@ -591,6 +593,13 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.shared:
+                if(message != null && message.getContent() != null && owner != null ){
+                    ShareDIalog.share(WishingActivity.this,message,owner);
+                }else{
+                    Snackbar.make(findViewById(android.R.id.content),"正在载入，请稍后再试",Snackbar.LENGTH_SHORT).show();
+                }
                 break;
         }
         return true;

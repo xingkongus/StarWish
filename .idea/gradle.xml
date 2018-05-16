@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/bmobmodel" />
+            <option value="$PROJECT_DIR$/qrcodemaker" />
             <option value="$PROJECT_DIR$/visionlibrary" />
           </set>
         </option>

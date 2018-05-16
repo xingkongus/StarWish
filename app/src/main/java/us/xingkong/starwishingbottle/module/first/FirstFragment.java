@@ -71,7 +71,10 @@ public class FirstFragment extends BaseFragment<FirstContract.Presenter>
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getFragmentContext(), LoginActivity.class));
+                Intent intent = new Intent(getFragmentContext(), LoginActivity.class);
+                if(getData()!= null)
+                    intent.setData(getData());
+                startActivity(intent);
             }
         });
 
@@ -87,7 +90,10 @@ public class FirstFragment extends BaseFragment<FirstContract.Presenter>
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    startActivity(new Intent(getFragmentContext(), RegisterActivity.class));
+                                    Intent intent = new Intent(getFragmentContext(), RegisterActivity.class);
+                                    if(getData()!= null)
+                                        intent.setData(getData());
+                                    startActivity(intent);
                                 }
                             })
                             .onNegative(new MaterialDialog.SingleButtonCallback() {

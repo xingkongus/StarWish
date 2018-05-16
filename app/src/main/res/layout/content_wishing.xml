@@ -8,6 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".module.wish.WishingActivity"
     tools:showIn="@layout/activity_wishing">
+
     <LinearLayout
         android:layout_marginBottom="16dp"
         android:orientation="vertical"
@@ -126,6 +127,7 @@
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
 
         <include layout="@layout/content_wishing_ex"/>
 

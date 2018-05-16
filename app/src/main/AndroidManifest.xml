@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- if you want to load images from a file OR from the internet -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
 
 
     <application
@@ -50,11 +49,24 @@
             android:theme="@style/AppTheme.Register" />
         <activity
             android:name=".module.first.FirstActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.First">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--   URLscheme
+                    示例:"starwish://wish/abcefg"
+                    打开objectID为adbdefg的愿望  -->
+            <intent-filter>
+                <!-- 协议部分 -->
+                <data android:scheme="starwish" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
             </intent-filter>
         </activity>
         <activity
@@ -75,6 +87,10 @@
             <!--android:name="com.tencent.bugly.beta.ui.BetaActivity"-->
             <!--android:configChanges="keyboardHidden|orientation|screenSize|locale"-->
             <!--android:theme="@android:style/Theme.Translucent" />-->
+        <activity
+            android:name="com.hentaiuncle.qrcodemaker.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -39,7 +39,7 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
                 mPresenter.register(username.getText().toString().trim(),
                         nickname.getText().toString().trim(),
                         passwordRe.getText().toString().trim(),
-                        password.getText().toString().trim());
+                        password.getText().toString().trim(),RegisterActivity.this.getIntent().getData());
             }
         });
     }

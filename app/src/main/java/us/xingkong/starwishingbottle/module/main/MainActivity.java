@@ -1,6 +1,7 @@
 package us.xingkong.starwishingbottle.module.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,9 +9,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -19,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -28,6 +34,8 @@ import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.setting.SettingActivity;
+import us.xingkong.starwishingbottle.module.wish.WishingActivity;
+import xyz.sealynn.bmobmodel.model.Message;
 
 public class MainActivity extends BaseActivity<MainContract.Presenter>
         implements MainContract.View, EasyPermissions.PermissionCallbacks {
@@ -55,6 +63,32 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
             }
         });
 
+        Uri data = getIntent().getData();
+        if(data != null && data.getPath() != null && data.getPath().length() > 0) {
+            String id = data.getPath().substring(1);
+            DoUri(data.getHost(),id);
+        }
+    }
+
+    protected void DoUri(String action,String id) {
+        if(action.toLowerCase().equals("wish")){
+            BmobQuery<Message> bmobQuery = new BmobQuery<>();
+            bmobQuery.getObject(id, new QueryListener<Message>() {
+                @Override
+                public void done(Message message, BmobException e) {
+                    if(e != null){
+                        e.printStackTrace();
+                        Log.d("DoUri",e.toString());
+                        Toast.makeText(MainActivity.this,"Uri错误\n" + e.toString(),Toast.LENGTH_SHORT).show();
+                    }else if(message ==null){
+                        Log.d("DoUri","message is null!");
+                        Toast.makeText(MainActivity.this,"载入愿望出错啦",Toast.LENGTH_SHORT).show();
+                    }else{
+                        WishingActivity.showWishing(MainActivity.this,message,(message.isFinished()?message.getFinished().getObjectId():null));
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.starwishingbottle.base.BasePresenterImpl;
@@ -32,6 +30,7 @@ class InfoPresenter extends BasePresenterImpl implements InfoContarct.Presenter 
         this.mView = mView;
         this.mView.setPresenter(this);
     }
+
 
     @Override
     public void changePassword(String oriPass, String newPass, String newPassRe, final View view) {

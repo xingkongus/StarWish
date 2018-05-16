@@ -1,6 +1,7 @@
 package us.xingkong.starwishingbottle.base;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,9 +28,15 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
 
     protected View root;
 
+    /**
+     * 保存父Activity的Data
+     */
+    protected Uri data;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -80,5 +87,15 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
 
     public Context getFragmentContext() {
         return WishingBottleApplication.getAppContext();
+    }
+
+
+    public void setData(Uri data) {
+        System.out.println("!!!!!!!!!!!!!!" + data);
+        this.data = data;
+    }
+
+    public Uri getData() {
+        return data;
     }
 }

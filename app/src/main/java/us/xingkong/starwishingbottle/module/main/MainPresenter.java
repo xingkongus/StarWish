@@ -77,6 +77,7 @@ class MainPresenter extends BasePresenterImpl implements MainContract.Presenter 
 
                     BmobQuery<Message> query1 = new BmobQuery<>();
                     query1.addWhereContainedIn("objectId",messagesId);
+                    query1.order("-updatedAt");
                     query1.findObjects(new FindListener<Message>() {
                         @Override
                         public void done(List<Message> list, BmobException e) {
