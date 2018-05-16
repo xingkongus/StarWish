@@ -52,6 +52,7 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.RecyclerAdapterOther;
+import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.DoItDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
@@ -63,8 +64,8 @@ import xyz.sealynn.bmobmodel.model.Message;
 import xyz.sealynn.bmobmodel.model.Reversion;
 import xyz.sealynn.bmobmodel.model.User;
 
-public class WishingActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-
+public class WishingActivity extends BaseActivity<WishingContract.Presenter>
+        implements WishingContract.View, EasyPermissions.PermissionCallbacks {
 
     public static void showWishing(Context context, Message message, String isFinishedID) {
         Intent intent = new Intent(context, WishingActivity.class);
@@ -76,8 +77,6 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private Message message;
     private Boolean isFinished;
     private String isFinishedID;
-    private Toolbar toolbar;
-    private FloatingActionButton fab;
     private User owner, me;
     private DoItDialog doItDialog;
     private ProgressDialog progressDialog;
@@ -85,6 +84,8 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private List<Reversion> data;
     private User bestUser;
 
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     @BindView(R.id.head_image)
     AppCompatImageView headImg;
     @BindView(R.id.headPic)
@@ -131,26 +132,13 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private MenuItem delete;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wishing);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("愿望");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        Log.d("ctionBar", String.valueOf(actionBar == null));
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        fab = findViewById(R.id.fab);
+    protected void initEvent(Bundle savedInstanceState) {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 starOrUnstar();
             }
         });
-
-        ButterKnife.bind(this);
 
         doIt.setVisibility(View.GONE);
 
@@ -178,6 +166,30 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
 
         me = User.getCurrentUser(User.class);
 
+    }
+
+    @Override
+    protected void initViews() {
+        ActionBar actionBar = getSupportActionBar();
+        Log.d("ctionBar", String.valueOf(actionBar == null));
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    protected void prepareData() {
+
+    }
+
+    @Override
+    protected WishingContract.Presenter createPresenter() {
+        return new WishingPresenter(this);
+    }
+
+    @Override
+    protected int bindLayout() {
+        return R.layout.activity_wishing;
     }
 
     protected void init(final Message message, Exception e) {
@@ -733,4 +745,8 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
         }
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
 }

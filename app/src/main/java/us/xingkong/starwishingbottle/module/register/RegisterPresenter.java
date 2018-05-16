@@ -8,6 +8,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.starwishingbottle.base.BasePresenterImpl;
+import us.xingkong.starwishingbottle.util.BmobUtil;
 import xyz.sealynn.bmobmodel.model.User;
 
 /**
@@ -36,7 +37,7 @@ class RegisterPresenter extends BasePresenterImpl implements RegisterContract.Pr
                 public void done(User user, BmobException e) {
                     if (e != null) {
                         e.printStackTrace();
-                        Snackbar.make(mView.getActivity().findViewById(android.R.id.content), e.toString(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(mView.getActivity().findViewById(android.R.id.content), BmobUtil.getStringFromErrorCode(e), Snackbar.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(mView.getContext(), "注册成功", Toast.LENGTH_LONG).show();
                         mView.getActivity().finish();

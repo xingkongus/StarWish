@@ -20,7 +20,7 @@ import static cn.bmob.v3.BmobRealTimeData.TAG;
  * <p>
  * Email：sealynndev@gmail.com
  */
-public class EditMsgPresenter extends BasePresenterImpl implements EditMsgContract.Presenter {
+class EditMsgPresenter extends BasePresenterImpl implements EditMsgContract.Presenter {
 
     private EditMsgContract.View mView;
 

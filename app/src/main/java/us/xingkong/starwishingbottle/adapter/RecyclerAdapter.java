@@ -25,6 +25,7 @@ import cn.bmob.v3.listener.QueryListener;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.module.wish.WishingActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
+import us.xingkong.starwishingbottle.util.DateConverter;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.Message;
 import xyz.sealynn.bmobmodel.model.User;
@@ -58,7 +59,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder,int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Message message = messages.get(position);
 
         holder.preview.setText(message.getContent());
@@ -79,10 +80,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         q.getObject(message.getUser().getObjectId(), new QueryListener<User>() {
             @Override
             public void done(User user, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d(this.toString(),e.toString());
-                }else{
+                    Log.d(this.toString(), e.toString());
+                } else {
                     holder.user.setText(user.getNicknameOrUsername());
 
                     if (user != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)
@@ -100,28 +101,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
-        if(!message.isFinished())
+        if (!message.isFinished())
             holder.isFinished.setVisibility(View.GONE);
         else
             holder.isFinished.setVisibility(View.VISIBLE);
 
-        if(message.getPublished())
+        if (message.getPublished())
             holder.isPrivate.setVisibility(View.GONE);
         else
             holder.isPrivate.setVisibility(View.VISIBLE);
 
-        holder.date.setText(message.getUpdatedAt());
+        holder.date.setText(DateConverter.getDateBefore(message.getUpdatedAt()));
         holder.userinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoActivity.showUserInfo(context,message.getUser());
+                InfoActivity.showUserInfo(context, message.getUser());
             }
         });
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WishingActivity.showWishing(context,message,(message.getFinished() == null?null:message.getFinished().getObjectId()));
+                WishingActivity.showWishing(context, message, (message.getFinished() == null ? null : message.getFinished().getObjectId()));
             }
         });
 
@@ -135,8 +136,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
-        AppCompatImageView picture,headPic,isFinished,isPrivate;
-        AppCompatTextView preview,user,date;
+        AppCompatImageView picture, headPic, isFinished, isPrivate;
+        AppCompatTextView preview, user, date;
         LinearLayout userinfo;
 
 

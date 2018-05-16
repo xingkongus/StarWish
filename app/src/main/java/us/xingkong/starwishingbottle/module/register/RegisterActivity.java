@@ -3,6 +3,7 @@ package us.xingkong.starwishingbottle.module.register;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
 
 import butterknife.BindView;
@@ -26,6 +27,8 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
     AppCompatEditText passwordRe;
     @BindView(R.id.et_nickname)
     AppCompatEditText nickname;
+    @BindView(R.id.back)
+    AppCompatImageButton back;
 
 
     @Override
@@ -38,6 +41,13 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
                         nickname.getText().toString().trim(),
                         passwordRe.getText().toString().trim(),
                         password.getText().toString().trim(),RegisterActivity.this.getIntent().getData());
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -80,6 +90,6 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
 
     @Override
     public boolean isSupportSwipeBack() {
-        return true;
+        return false;
     }
 }

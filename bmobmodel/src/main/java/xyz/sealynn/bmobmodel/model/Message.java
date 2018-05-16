@@ -66,12 +66,17 @@ public class Message extends BmobObject {
     }
 
     public static void publish(User user, File file, String content, Boolean published, final UploadFileListener listener) {
+
         final Message message = new Message();
         message.setContent(content);
         message.setUser(user);
 
         message.setPublished(published);
         if (file != null) {
+            if (file.length() > 1024 * 1024 * 8) {
+                listener.done(new BmobException("文件大小超过限制，请上传小于8M的文件"));
+                return;
+            }
             final BmobFile bmobFile = new BmobFile(file);
             bmobFile.upload(new UploadFileListener() {
                 @Override

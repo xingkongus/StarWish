@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.tencent.bugly.beta.Beta;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import us.xingkong.starwishingbottle.module.about.AboutActivity;
@@ -27,6 +28,7 @@ import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.module.first.FirstActivity;
+import us.xingkong.starwishingbottle.util.BmobUtil;
 import xyz.sealynn.bmobmodel.model.User;
 
 /**
@@ -73,9 +75,7 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                BmobUser.logOut();
-                                startActivity(new Intent(SettingActivity.this, FirstActivity.class));
-                                ActivityCollector.finishAll();
+                                BmobUtil.logout(SettingActivity.this);
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
