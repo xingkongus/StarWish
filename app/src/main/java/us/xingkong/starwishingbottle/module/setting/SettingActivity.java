@@ -146,4 +146,9 @@ public class SettingActivity extends BaseActivity<SettingContract.Presenter> imp
         }
         return true;
     }
+
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
 }

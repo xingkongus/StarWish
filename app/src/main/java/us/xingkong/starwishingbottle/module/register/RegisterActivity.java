@@ -77,4 +77,9 @@ public class RegisterActivity extends BaseActivity<RegisterContract.Presenter> i
         passwordRe.setEnabled(true);
         nickname.setEnabled(true);
     }
+
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
 }

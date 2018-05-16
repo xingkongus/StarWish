@@ -526,6 +526,11 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
         }
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
+
     class ChangePassDialog extends AppCompatDialog {
 
         @BindView(R.id.ok)

@@ -119,4 +119,28 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public void setPresenter(P presenter) {
 
     }
+
+    @Override
+    public void onSwipeBackLayoutSlide(float slideOffset) {
+
+    }
+
+    @Override
+    public void onSwipeBackLayoutCancel() {
+
+    }
+
+    @Override
+    public void onSwipeBackLayoutExecuted() {
+        mSwipeBackHelper.swipeBackward();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // 正在滑动返回的时候取消返回按钮事件
+        if (mSwipeBackHelper.isSliding()) {
+            return;
+        }
+        mSwipeBackHelper.backward();
+    }
 }

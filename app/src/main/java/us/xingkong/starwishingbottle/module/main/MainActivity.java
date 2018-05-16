@@ -167,4 +167,9 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
 
     }
+
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
+    }
 }

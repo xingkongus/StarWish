@@ -67,4 +67,8 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         password.setEnabled(true);
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
+    }
 }

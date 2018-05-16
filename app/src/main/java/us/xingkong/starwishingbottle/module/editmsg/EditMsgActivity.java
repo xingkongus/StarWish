@@ -214,6 +214,11 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         }
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
+
     class myDialog extends AppCompatDialog {
 
         public myDialog(Context context) {
