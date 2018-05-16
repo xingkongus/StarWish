@@ -174,7 +174,7 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
                 file = new File(getExternalCacheDir(), "camera.jpg");
                 try {
                     FileOutputStream out = new FileOutputStream(file);
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 80, out);
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
                     out.flush();
                     out.close();
 

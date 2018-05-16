@@ -25,7 +25,7 @@ class RegisterPresenter extends BasePresenterImpl implements RegisterContract.Pr
     }
 
     @Override
-    public void register(String username, String nickname, String password, String passwordRe,Uri data) {
+    public void register(String username, String nickname, String password, String passwordRe, Uri data) {
         mView.freeze();
 
         try {
@@ -38,6 +38,7 @@ class RegisterPresenter extends BasePresenterImpl implements RegisterContract.Pr
                         e.printStackTrace();
                         Snackbar.make(mView.getActivity().findViewById(android.R.id.content), e.toString(), Snackbar.LENGTH_SHORT).show();
                     } else {
+                        Toast.makeText(mView.getContext(), "注册成功", Toast.LENGTH_LONG).show();
                         mView.getActivity().finish();
                     }
                     mView.unfreeze();
