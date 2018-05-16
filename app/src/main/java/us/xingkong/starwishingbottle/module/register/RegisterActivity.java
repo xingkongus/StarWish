@@ -5,8 +5,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 
-import com.suke.widget.SwitchButton;
-
 import butterknife.BindView;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;

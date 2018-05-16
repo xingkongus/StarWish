@@ -139,7 +139,7 @@
     <string name="change_avatar">更换头像</string>
     <string name="ok">确定</string>
     <string name="cancle">取消</string>
-    <string name="need_permission">图文功能需要读取存储权限</string>
+    <string name="need_permission">图文功能需要读取存储权限，请允许后重试。</string>
     <string name="title_activity_wishing">WishingActivity</string>
     <string name="pls_ent_nik">请输入昵称</string>
     <string name="username_filter">0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM</string>

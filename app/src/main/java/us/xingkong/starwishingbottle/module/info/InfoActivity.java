@@ -8,17 +8,15 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -28,8 +26,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
@@ -38,7 +34,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,11 +51,6 @@ import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.EditTextDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
-import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
-import us.xingkong.starwishingbottle.module.first.FirstActivity;
-import us.xingkong.starwishingbottle.module.main.MainActivity;
-import us.xingkong.starwishingbottle.module.setting.SettingActivity;
-import us.xingkong.starwishingbottle.util.ActivityCollector;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.User;
 
@@ -68,7 +58,7 @@ import xyz.sealynn.bmobmodel.model.User;
  * 用户信息
  */
 public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
-        implements InfoContarct.View,EasyPermissions.PermissionCallbacks {
+        implements InfoContarct.View, EasyPermissions.PermissionCallbacks {
 
 
     //--------------------------------------------------------------------
@@ -180,7 +170,12 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
         headPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeAvatar(user);
+                if ((!EasyPermissions.hasPermissions(InfoActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    EasyPermissions.requestPermissions(InfoActivity.this, getString(R.string.need_permission),
+                            0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
+                } else
+                    changeAvatar(user);
             }
         });
 
@@ -334,11 +329,6 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
     }
 
     protected void changeAvatar(User user) {
-        if ((!EasyPermissions.hasPermissions(InfoActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
-            EasyPermissions.requestPermissions(InfoActivity.this, getString(R.string.need_permission),
-                    0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
-        }
 
         if (user == null) {
             Log.d("changeAvatar", "User is invaild!");
@@ -350,7 +340,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
         GetPictureDialog.GetPicture(this, 1, 2, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new ChangePassDialog(InfoActivity.this).show();
+
             }
         });
     }

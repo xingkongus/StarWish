@@ -64,7 +64,6 @@ import xyz.sealynn.bmobmodel.model.User;
 public class WishingActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
 
-
     public static void showWishing(Context context, Message message, String isFinishedID) {
         Intent intent = new Intent(context, WishingActivity.class);
         intent.putExtra("wishing", message.getObjectId());
@@ -177,12 +176,6 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
 
         me = User.getCurrentUser(User.class);
 
-        if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
-                    0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
-        }
-
     }
 
     protected void init(final Message message, Exception e) {
@@ -283,7 +276,13 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
         doIt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doItDialog.show();
+                if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
+                            0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
+                } else {
+                    doItDialog.show();
+                }
             }
         });
         preview.setText(message.getContent());
@@ -527,13 +526,13 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
 
     }
 
-    protected void updateDelete(){
+    protected void updateDelete() {
         if (message == null || me == null)
             return;
 
         if (message.getUser().getObjectId().equals(me.getObjectId())) {
             delete.setVisible(true);
-        }else {
+        } else {
             delete.setVisible(false);
         }
     }
@@ -616,10 +615,15 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                 finish();
                 break;
             case R.id.shared:
-                if(message != null && message.getContent() != null && owner != null ){
-                    ShareDIalog.share(WishingActivity.this,message,owner);
-                }else{
-                    Snackbar.make(findViewById(android.R.id.content),"正在载入，请稍后再试",Snackbar.LENGTH_SHORT).show();
+                if (message != null && message.getContent() != null && owner != null) {
+                    if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                            && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
+                                0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
+                    } else
+                        ShareDIalog.share(WishingActivity.this, message, owner);
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), "正在载入，请稍后再试", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
         }

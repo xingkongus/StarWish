@@ -117,7 +117,7 @@
             android:textSize="24sp"
             android:layout_weight="1"/>
 
-        <com.suke.widget.SwitchButton
+        <Switch
             android:id="@+id/bt_switch"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />

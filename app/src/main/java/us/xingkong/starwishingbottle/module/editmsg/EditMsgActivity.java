@@ -24,12 +24,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import com.bumptech.glide.Glide;
-import com.suke.widget.SwitchButton;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -43,7 +42,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.base.Constants;
-import us.xingkong.starwishingbottle.module.main.MainActivity;
 import us.xingkong.visionlibrary.operator.Blur;
 import us.xingkong.visionlibrary.operator.Light;
 import vision.core.Core;
@@ -56,7 +54,7 @@ import xyz.sealynn.bmobmodel.model.User;
  * Email：sealynndev@gmail.com
  */
 public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
-        implements EditMsgContract.View,EasyPermissions.PermissionCallbacks {
+        implements EditMsgContract.View, EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.et_content)
     AppCompatEditText content;
@@ -69,7 +67,7 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
     @BindView(R.id.head_image)
     AppCompatImageView headImgView;
     @BindView(R.id.bt_switch)
-    SwitchButton switchButton;
+    Switch switchButton;
 
     private myDialog dialog;
     private ProgressDialog progressDialog;
@@ -109,7 +107,12 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
+                if ((!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
+                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    EasyPermissions.requestPermissions(EditMsgActivity.this, getString(R.string.need_permission),
+                            0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
+                } else
+                    dialog.show();
 
             }
         });
@@ -122,12 +125,6 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         progressDialog.setTitle("正在许愿");
         progressDialog.setMessage("请稍等……");
         progressDialog.setCancelable(false);
-
-        if ((!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                &&Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
-            EasyPermissions.requestPermissions(EditMsgActivity.this, getString(R.string.need_permission),
-                    0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
-        }
     }
 
     @Override
@@ -188,14 +185,14 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
                     blur.r = 3;
                     blur.t = 2;
                     light.d = 6;
-                    VisionImage img = new VisionImage(bmp.getWidth(),bmp.getHeight());
-                    bmp.getPixels(img.getRGB(),0,bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+                    VisionImage img = new VisionImage(bmp.getWidth(), bmp.getHeight());
+                    bmp.getPixels(img.getRGB(), 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-                    light.Operator(img,getContext());
-                    blur.Operator(img,getContext());
+                    light.Operator(img, getContext());
+                    blur.Operator(img, getContext());
 
 
-                    bmp.setPixels(img.getRGB(),0,bmp.getWidth(),0,0,bmp.getWidth(),bmp.getHeight());
+                    bmp.setPixels(img.getRGB(), 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
                     img = null;
                     System.gc();
 

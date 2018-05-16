@@ -40,9 +40,16 @@ public class AboutActivity extends MaterialAboutActivity {
                         .subText(VersionCodeUtil.getVersionName(this)).build())
                 .build();
 
+        MaterialAboutCard duty = new MaterialAboutCard.Builder()
+                .title("免责声明")
+                .addItem(new MaterialAboutActionItem.Builder()
+                        .text(R.string.duty_text).build())
+                .build();
+
         return new MaterialAboutList.Builder()
                 .addCard(version)
                 .addCard(author)
+                .addCard(duty)
                 .build(); // This creates an empty screen, add cards with .addCard()
     }
 
