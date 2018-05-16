@@ -27,6 +27,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
@@ -626,8 +628,61 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                     Snackbar.make(findViewById(android.R.id.content), "正在载入，请稍后再试", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.delete:
+                if (owner != null && me != null){
+                    if(owner.getObjectId().equals(me.getObjectId())){
+                        if(isFinished){
+                            Snackbar.make(findViewById(android.R.id.content), "无法删除该愿望，因为它已被实现", Snackbar.LENGTH_SHORT).show();
+                        }else{
+                            showDeleteDialog(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    message.delete(new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if(e != null) {
+                                                Snackbar.make(findViewById(android.R.id.content), "无法删除该愿望\n" + e.toString(), Snackbar.LENGTH_SHORT).show();
+                                            } else {
+                                                Snackbar.make(findViewById(android.R.id.content), "删除成功" , Snackbar.LENGTH_SHORT).show();
+                                                WishingActivity.this.finish();
+                                            }
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }else{
+                        Snackbar.make(findViewById(android.R.id.content), "无法删除该愿望，因为它不是你的", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                }else{
+                    Snackbar.make(findViewById(android.R.id.content), "正在载入，请稍后再试", Snackbar.LENGTH_SHORT).show();
+                }
+                break;
         }
         return true;
+    }
+
+    private void showDeleteDialog(final View.OnClickListener delete){
+        new MaterialDialog.Builder(WishingActivity.this)
+                .title("确定删除吗？")
+                .content("删除愿望后大家就不能帮你实现咯")
+                .positiveText(getString(R.string.ok))
+                .negativeText("让我再想想")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        delete.onClick(null);
+                    }
+                })
+                .icon(WishingActivity.this.getResources().getDrawable(R.drawable.ic_action_mood_bad))
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     @Override
