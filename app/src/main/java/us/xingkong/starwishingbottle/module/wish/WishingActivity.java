@@ -63,6 +63,8 @@ import xyz.sealynn.bmobmodel.model.User;
 
 public class WishingActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
+
+
     public static void showWishing(Context context, Message message, String isFinishedID) {
         Intent intent = new Intent(context, WishingActivity.class);
         intent.putExtra("wishing", message.getObjectId());
@@ -80,6 +82,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private ProgressDialog progressDialog;
     private RecyclerAdapterOther adapter;
     private List<Reversion> data;
+    private User bestUser;
 
     @BindView(R.id.head_image)
     AppCompatImageView headImg;
@@ -123,6 +126,8 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     AppCompatImageView pictureBest;
     @BindView(R.id.none)
     AppCompatTextView none;
+
+    private MenuItem delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,6 +294,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
         initOther();
         updateFab();
         updateDoit();
+        updateDelete();
     }
 
     void initBest() {
@@ -336,7 +342,9 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                 if (e != null) {
                     e.printStackTrace();
                     Log.d(this.toString(), e.toString());
+                    WishingActivity.this.bestUser = null;
                 } else {
+                    WishingActivity.this.bestUser = user;
                     tv_user_best.setText(user.getNicknameOrUsername());
                     if (user != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)
                         GlideImageLoader.Circle(Glide.with(WishingActivity.this)
@@ -519,6 +527,17 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
 
     }
 
+    protected void updateDelete(){
+        if (message == null || me == null)
+            return;
+
+        if (message.getUser().getObjectId().equals(me.getObjectId())) {
+            delete.setVisible(true);
+        }else {
+            delete.setVisible(false);
+        }
+    }
+
     protected void updateDoit() {
         if (message == null || me == null)
             return;
@@ -571,7 +590,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                     Log.d(this.toString(), e.toString());
                 } else if (list != null && list.size() > 0) {
                     fab.setImageResource(R.drawable.ic_action_like);
-                    if (message.isFinished())
+                    if (message.isFinished() && bestUser != null && bestUser.getObjectId().equals(me.getObjectId()))
                         fab.setEnabled(false);
                 } else {
                     fab.setImageResource(R.drawable.ic_action_unlike);
@@ -585,6 +604,8 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_message, menu);
+        delete = menu.findItem(R.id.delete);
+        delete.setVisible(false);
         return true;
     }
 

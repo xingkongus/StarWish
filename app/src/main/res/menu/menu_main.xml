@@ -8,10 +8,4 @@
         android:title="@string/person"
         app:showAsAction="always"/>
 
-    <!--<item-->
-        <!--android:id="@+id/send"-->
-        <!--android:icon="@drawable/ic_action_send"-->
-        <!--android:title="@string/send"-->
-        <!--app:showAsAction="ifRoom"/>-->
-
 </menu>

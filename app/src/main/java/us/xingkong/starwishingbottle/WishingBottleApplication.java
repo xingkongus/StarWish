@@ -2,13 +2,21 @@ package us.xingkong.starwishingbottle;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.bmob.v3.Bmob;
@@ -26,18 +34,13 @@ public class WishingBottleApplication extends Application {
 //        CrashReport.initCrashReport(getApplicationContext(), Constants.APP_ID, false);
         Bugly.init(getApplicationContext(), Constants.APP_ID, false);
 
-//        BiliShareConfiguration configuration = new BiliShareConfiguration.Builder(context)
-//                .sina(appKey, redirectUrl, scope) //配置新浪
-//                .qq(appId) //配置qq
-//                .weixin(appId) //配置微信
-//                .imageDownloader(new ShareFrescoImageDownloader()) //图片下载器
-//                .build();
-//
-//        //global client全局共用，也可以用BiliShare.get(name)获取一个特定的client，以便业务隔离。
-//        BiliShare shareClient = BiliShare.global();
-//        shareClient.config(configuration); //config只需要配置一次
-
         appContext = getApplicationContext();
+
+        /*
+          设置sd卡的Download为更新资源保存目录;
+          后续更新资源会保存在此目录，需要在manifest中添加WRITE_EXTERNAL_STORAGE权限;
+         */
+        Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
