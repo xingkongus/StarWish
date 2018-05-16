@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatButton;
@@ -83,18 +84,22 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                mPresenter.publishMessage(BmobUser.getCurrentUser(User.class), file,
-                        content.getText().toString().trim(), !switchButton.isChecked(), new UploadFileListener() {
-                            @Override
-                            public void done(BmobException e) {
-                                if (e == null) {
-                                    finish();
-                                } else
-                                    e.printStackTrace();
-                                progressDialog.dismiss();
-                            }
-                        });
+                if (content.getText().toString().trim().length() > 0) {
+                    progressDialog.show();
+                    mPresenter.publishMessage(BmobUser.getCurrentUser(User.class), file,
+                            content.getText().toString().trim(), !switchButton.isChecked(), new UploadFileListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        finish();
+                                    } else
+                                        e.printStackTrace();
+                                    progressDialog.dismiss();
+                                }
+                            });
+                }
+                else
+                    Snackbar.make(v, "内容不能为空", Snackbar.LENGTH_SHORT).show();
             }
         });
 

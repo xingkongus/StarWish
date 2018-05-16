@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -53,7 +54,7 @@ public class DoItDialog extends AppCompatDialog {
     }
 
     public void setImageUri(Uri imageUri) {
-        if(imageUri != null) {
+        if (imageUri != null) {
             Glide.with(this.getContext()).load(imageUri).into(picture);
             imageFile = getFileByUri(imageUri);
         } else {
@@ -64,7 +65,7 @@ public class DoItDialog extends AppCompatDialog {
 
     public void setImageFile(File file) {
         imageFile = file;
-        if(file != null) {
+        if (file != null) {
             Glide.with(this.getContext()).load(file).into(picture);
         } else {
             Glide.with(this.getContext()).load(R.drawable.ic_action_add_dark).into(picture);
@@ -104,35 +105,41 @@ public class DoItDialog extends AppCompatDialog {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(resultListener != null)
-                    resultListener.onOK(DoItDialog.this.getImageFile(),DoItDialog.this.message.getText().toString());
-                DoItDialog.this.dismiss();
+                if (DoItDialog.this.message.getText().toString().length() > 0) {
+                    if (resultListener != null)
+                        resultListener.onOK(DoItDialog.this.getImageFile(), DoItDialog.this.message.getText().toString());
+                    DoItDialog.this.dismiss();
+                } else {
+                    Snackbar.make(view, "内容不能为空!", Snackbar.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(resultListener != null)
+                if (resultListener != null)
                     resultListener.onSelectPicture();
             }
         });
     }
 
-    public void clear(){
+    public void clear() {
         this.setImageFile(null);
         this.message.setText("");
     }
 
     @Override
     public void show() {
-        if(picture != null)
+        if (picture != null)
             clear();
         super.show();
     }
 
     public interface ResultListener {
-        void onOK(File imageFile,String message);
+        void onOK(File imageFile, String message);
+
         void onSelectPicture();
     }
 

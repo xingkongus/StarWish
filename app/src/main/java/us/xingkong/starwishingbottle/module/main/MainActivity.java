@@ -140,9 +140,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.send:
-//                startActivity(new Intent(MainActivity.this, EditMsgActivity.class));
-//                break;
             case R.id.person:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
