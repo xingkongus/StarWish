@@ -5,8 +5,10 @@ import android.util.Log;
 import java.io.File;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
@@ -107,5 +109,39 @@ public class Message extends BmobObject {
 
     public Boolean isFinished() {
         return (getFinished() != null && getFinished().getObjectId() != null && getFinished().getObjectId().length() > 0);
+    }
+
+    /**
+     * 统计未读评论数
+     * @param listener
+     */
+    public void countUnread(final CountListener listener){
+        BmobQuery<Reversion> query = new BmobQuery<>();
+        query.addWhereEqualTo("read",false);
+        query.addWhereEqualTo("message",this);
+        query.addWhereEqualTo("finished",true);
+        query.count(Reversion.class, new CountListener() {
+            @Override
+            public void done(Integer integer, BmobException e) {
+                listener.done(integer,e);
+            }
+        });
+    }
+
+    /**
+     * 统计评论数
+     * @param listener
+     */
+    public void countRev(final CountListener listener){
+        BmobQuery<Reversion> query = new BmobQuery<>();
+
+        query.addWhereEqualTo("message",this);
+        query.addWhereEqualTo("finished",true);
+        query.count(Reversion.class, new CountListener() {
+            @Override
+            public void done(Integer integer, BmobException e) {
+                listener.done(integer,e);
+            }
+        });
     }
 }

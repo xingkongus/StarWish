@@ -41,9 +41,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobBatch;
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -222,6 +225,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                         Log.d("show Wishing", "User is null");
                     } else {
                         owner = user;
+
                         refresh();
                     }
                 }
@@ -445,6 +449,23 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     return;
                 }
                 if (list != null && list.size() > 0) {
+                    if(message.getUser().isMe()){
+                        Reversion.setAllRead(list, new QueryListListener() {
+                            @Override
+                            public void done(List list, BmobException e) {
+                                if(e != null){
+                                    e.printStackTrace();
+                                    Log.d("setAllRead",e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void done(Object o, Object o2) {
+
+                            }
+                        });
+                    }
+
                     if (isFinished) {
 
                         for (int i = 0; i < list.size(); i++) {
@@ -488,6 +509,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     .into(headPic);
 
         tv_user.setText(username);
+
     }
 
     protected void starOrUnstar() {

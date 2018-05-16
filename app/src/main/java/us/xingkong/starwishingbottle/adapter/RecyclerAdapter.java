@@ -21,6 +21,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.QueryListener;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.module.wish.WishingActivity;
@@ -97,6 +98,36 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                                 .load(R.drawable.ic_action_person)
                                 .transition(new DrawableTransitionOptions().crossFade()))
                                 .into(holder.headPic);
+
+
+                    if(user.isMe()){
+                        message.countUnread(new CountListener() {
+                            @Override
+                            public void done(Integer integer, BmobException e) {
+                                if(e != null){
+                                    e.printStackTrace();
+                                    Log.d("countUnread",e.toString());
+                                }else{
+                                    Log.d("countUnread",integer.toString());
+                                    if(integer == null){
+                                        Log.d("countUnread",integer.toString());
+                                    }else{
+                                        int count = integer;
+                                        if(count > 0) {
+                                            if(count > 99)
+                                                holder.unreadCount.setText("99+");
+                                            else
+                                                holder.unreadCount.setText(count + "");
+
+                                            holder.unreadCount.setVisibility(View.VISIBLE);
+                                        }
+
+                                    }
+                                }
+                            }
+                        });
+                    }
+
                 }
             }
         });
@@ -126,6 +157,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
+        holder.unreadCount.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -136,8 +168,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
-        AppCompatImageView picture, headPic, isFinished, isPrivate;
-        AppCompatTextView preview, user, date;
+        AppCompatImageView picture,headPic,isFinished,isPrivate;
+        AppCompatTextView preview,user,date,unreadCount;
+
         LinearLayout userinfo;
 
 
@@ -154,6 +187,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             isPrivate = itemView.findViewById(R.id.isprivate);
 
             userinfo = itemView.findViewById(R.id.part_user);
+            unreadCount = itemView.findViewById(R.id.unread_count);
 
         }
     }

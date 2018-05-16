@@ -3,13 +3,16 @@ package xyz.sealynn.bmobmodel.model;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobBatch;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -28,6 +31,15 @@ public class Reversion extends BmobObject {
     private Message message;
     private BmobFile picture;
     private Boolean finished;
+    private Boolean read;
+
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
+
+    public Boolean getRead() {
+        return read;
+    }
 
     public Boolean getFinished() {
         return finished;
@@ -230,5 +242,20 @@ public class Reversion extends BmobObject {
 
             }
         });
+    }
+
+    public static void setAllRead(List<Reversion> reversions, QueryListListener listListener){
+        if(reversions == null || reversions.size() == 0)
+            return;
+        List<BmobObject> rs = new ArrayList<>();
+        for(int i = 0;i < reversions.size();i++) {
+            if(reversions.get(i).getRead())
+                continue;
+            Reversion reversion = new Reversion();
+            reversion.setObjectId(reversions.get(i).getObjectId());
+            reversion.setRead(true);
+            rs.add(reversion);
+        }
+        new BmobBatch().updateBatch(rs).doBatch(listListener);
     }
 }
