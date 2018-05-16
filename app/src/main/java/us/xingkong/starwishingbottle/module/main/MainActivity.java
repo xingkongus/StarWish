@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
     @Override
     protected void prepareData() {
         if ((!EasyPermissions.hasPermissions(MainActivity.this, Constants.PERMISSION_READ_PHONE_STATE))
-                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             EasyPermissions.requestPermissions(MainActivity.this, getString(R.string.need_phone_permission),
                     0, Constants.PERMISSION_READ_PHONE_STATE);
         }

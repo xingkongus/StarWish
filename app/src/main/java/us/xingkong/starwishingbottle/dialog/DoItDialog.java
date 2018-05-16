@@ -3,6 +3,8 @@ package us.xingkong.starwishingbottle.dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -55,20 +57,23 @@ public class DoItDialog extends AppCompatDialog {
 
     public void setImageUri(Uri imageUri) {
         if (imageUri != null) {
-            Glide.with(this.getContext()).load(imageUri).into(picture);
-            imageFile = getFileByUri(imageUri);
+            setImageFile(getFileByUri(imageUri));
         } else {
-            Glide.with(this.getContext()).load(R.drawable.ic_action_add_dark).into(picture);
-            imageFile = null;
+            setImageFile(null);
         }
     }
 
     public void setImageFile(File file) {
         imageFile = file;
         if (file != null) {
-            Glide.with(this.getContext()).load(file).into(picture);
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            if(bitmap != null){
+                picture.setImageBitmap(bitmap);
+            }else{
+                picture.setImageResource(R.drawable.ic_action_add_dark);
+            }
         } else {
-            Glide.with(this.getContext()).load(R.drawable.ic_action_add_dark).into(picture);
+            picture.setImageResource(R.drawable.ic_action_add_dark);
         }
     }
 

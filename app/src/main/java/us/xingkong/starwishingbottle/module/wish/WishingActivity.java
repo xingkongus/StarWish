@@ -279,7 +279,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
             @Override
             public void onClick(View view) {
                 if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
                             0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
                 } else {
@@ -619,7 +619,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
             case R.id.shared:
                 if (message != null && message.getContent() != null && owner != null) {
                     if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                            && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
                                 0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
                     } else
