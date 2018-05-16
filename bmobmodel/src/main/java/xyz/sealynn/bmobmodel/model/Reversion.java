@@ -139,6 +139,7 @@ public class Reversion extends BmobObject {
                     reversion = list.get(0);
                     reversion.setContent(content);
                     reversion.setFinished(true);
+                    reversion.setRead(false);
                     if (picture != null) {
                         if (picture.length() > 1024 * 1024 * 8) {
                             listener.done(new BmobException("文件大小超过限制，请上传小于8M的文件"));
@@ -200,6 +201,7 @@ public class Reversion extends BmobObject {
                     reversion.setMessage(message);
                     reversion.setUser(user);
                     reversion.setFinished(true);
+                    reversion.setRead(false);
                     if (picture == null) {
                         reversion.save(new SaveListener<String>() {
                             @Override
@@ -249,8 +251,9 @@ public class Reversion extends BmobObject {
             return;
         List<BmobObject> rs = new ArrayList<>();
         for(int i = 0;i < reversions.size();i++) {
-            if(reversions.get(i).getRead())
-                continue;
+            if(reversions.get(i).getRead() != null)
+                if(reversions.get(i).getRead())
+                    continue;
             Reversion reversion = new Reversion();
             reversion.setObjectId(reversions.get(i).getObjectId());
             reversion.setRead(true);

@@ -3,6 +3,7 @@ package xyz.sealynn.bmobmodel.model;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
@@ -118,6 +119,10 @@ public class Message extends BmobObject {
     public void countUnread(final CountListener listener){
         BmobQuery<Reversion> query = new BmobQuery<>();
         query.addWhereEqualTo("read",false);
+        ArrayList<Boolean> v = new ArrayList<>();
+        v.add(false);
+        v.add(null);
+        query.addWhereContainedIn("read",v);
         query.addWhereEqualTo("message",this);
         query.addWhereEqualTo("finished",true);
         query.count(Reversion.class, new CountListener() {
