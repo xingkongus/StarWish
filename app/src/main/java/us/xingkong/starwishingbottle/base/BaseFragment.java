@@ -72,7 +72,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment
 
     @Override
     public void onDetach() {
-        mUnbinder.unbind();
+        if(mUnbinder != null)
+            mUnbinder.unbind();
         super.onDetach();
     }
 
