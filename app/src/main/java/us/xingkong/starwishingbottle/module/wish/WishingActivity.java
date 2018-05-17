@@ -304,7 +304,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
             }
         });
         preview.setText(message.getContent());
-        date.setText(message.getUpdatedAt());
+        date.setText(message.getCreatedAt());
 
 
         initBest();

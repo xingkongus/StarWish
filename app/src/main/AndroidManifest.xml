@@ -94,7 +94,7 @@
         <activity
             android:name="com.hentaiuncle.qrcodemaker.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

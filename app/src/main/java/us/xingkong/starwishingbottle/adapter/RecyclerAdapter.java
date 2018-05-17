@@ -174,7 +174,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         LinearLayout userinfo;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.card_view);
             preview = itemView.findViewById(R.id.preview);

@@ -17,7 +17,7 @@ import java.util.Locale;
 public class DateConverter {
 
     public static String getDateBefore(String date) {
-        return String.valueOf(DateUtils.getRelativeTimeSpanString(getMillisFromBmobDate(date)));
+        return String.valueOf(DateUtils.getRelativeTimeSpanString(getMillisFromBmobDate(date))) + " 更新";
     }
 
     public static long getMillisFromBmobDate(String date) {
