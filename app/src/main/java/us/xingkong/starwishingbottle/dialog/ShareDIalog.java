@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatDialog;
@@ -96,12 +97,14 @@ public class ShareDIalog extends AppCompatDialog {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String path = save("share.jpg");
+                String path = save("starwish_share.jpg");
 
                 if(path != null){
                     Intent imageIntent = new Intent(Intent.ACTION_SEND);
                     imageIntent.setType("image/jpeg");
                     imageIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+                    imageIntent.putExtra(Intent.EXTRA_SUBJECT, user.getNicknameOrUsername() + "的愿望");
+                    imageIntent.putExtra(Intent.EXTRA_TEXT, "快来帮我实现愿望~\n");
                     ShareDIalog.this.getContext().startActivity(Intent.createChooser(imageIntent, "分享星愿"));
                 }
             }
@@ -132,6 +135,7 @@ public class ShareDIalog extends AppCompatDialog {
         if(checkBitmapReady()){
 
             try {
+
                 String str = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, "星愿分享", user.getNicknameOrUsername() + "的愿望");
                 if(str == null){
                     Snackbar.make(findViewById(android.R.id.content),"保存失败\n请检查储存权限" ,Snackbar.LENGTH_SHORT).show();
@@ -155,12 +159,14 @@ public class ShareDIalog extends AppCompatDialog {
         if(checkBitmapReady()){
 
             try {
-                File file = new File(getContext().getExternalCacheDir(), catchFileName);
+                String path = Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera";
+                File file = new File(path, catchFileName);
                 try {
                     FileOutputStream outputStream = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream );
                     outputStream.close();
-                    return file.getAbsolutePath();
+                    return MediaStore.Images.Media.insertImage(getContext().getContentResolver(),file.getAbsolutePath(),"星愿分享",user.getNicknameOrUsername() + "的愿望");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("share QRcode",e.toString());
