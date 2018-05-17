@@ -20,6 +20,8 @@ import android.view.WindowManager;
 import com.hentaiuncle.qrcodemaker.maker.QRcodeMaker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,7 +96,8 @@ public class ShareDIalog extends AppCompatDialog {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String path = save();
+                String path = save("share.jpg");
+
                 if(path != null){
                     Intent imageIntent = new Intent(Intent.ACTION_SEND);
                     imageIntent.setType("image/jpeg");
@@ -141,6 +144,34 @@ public class ShareDIalog extends AppCompatDialog {
                 e.printStackTrace();
                 Log.d("save QRcode",e.toString());
                 Snackbar.make(findViewById(android.R.id.content),"保存出错\n" + e.toString(),Snackbar.LENGTH_SHORT).show();
+                return null;
+            }
+        }else {
+            return null;
+        }
+    }
+
+    public String save(String catchFileName){
+        if(checkBitmapReady()){
+
+            try {
+                File file = new File(getContext().getExternalCacheDir(), catchFileName);
+                try {
+                    FileOutputStream outputStream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream );
+                    outputStream.close();
+                    return file.getAbsolutePath();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("share QRcode",e.toString());
+                    Snackbar.make(findViewById(android.R.id.content),"分享失败\n请检查储存权限" ,Snackbar.LENGTH_SHORT).show();
+                    return null;
+                }
+
+            }catch (RuntimeException e){
+                e.printStackTrace();
+                Log.d("share QRcode",e.toString());
+                Snackbar.make(findViewById(android.R.id.content),"分享出错\n" + e.toString(),Snackbar.LENGTH_SHORT).show();
                 return null;
             }
         }else {

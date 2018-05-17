@@ -3,13 +3,16 @@ package xyz.sealynn.bmobmodel.model;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobBatch;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -28,6 +31,15 @@ public class Reversion extends BmobObject {
     private Message message;
     private BmobFile picture;
     private Boolean finished;
+    private Boolean read;
+
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
+
+    public Boolean getRead() {
+        return read;
+    }
 
     public Boolean getFinished() {
         return finished;
@@ -108,50 +120,56 @@ public class Reversion extends BmobObject {
         reversion.update(listener);
     }
 
-    public static void submit(final User user, final Message message, final String content, final File picture, final UpdateListener listener){
+    public static void submit(final User user, final Message message, final String content, final File picture, final UpdateListener listener) {
+
         BmobQuery<Reversion> query = new BmobQuery<>();
-        query.addWhereEqualTo("user",user);
-        query.addWhereEqualTo("message",message);
+        query.addWhereEqualTo("user", user);
+        query.addWhereEqualTo("message", message);
         query.setLimit(1);
         query.findObjects(new FindListener<Reversion>() {
             @Override
             public void done(final List<Reversion> list, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d("Reversion.submit",e.toString());
+                    Log.d("Reversion.submit", e.toString());
                     listener.done(e);
                 }
                 final Reversion reversion;
-                if(list != null && list.size() > 0){
+                if (list != null && list.size() > 0) {
                     reversion = list.get(0);
                     reversion.setContent(content);
                     reversion.setFinished(true);
-                    if(picture != null) {
-                        if(reversion.getPicture() != null){
+                    reversion.setRead(false);
+                    if (picture != null) {
+                        if (picture.length() > 1024 * 1024 * 8) {
+                            listener.done(new BmobException("文件大小超过限制，请上传小于8M的文件"));
+                            return;
+                        }
+                        if (reversion.getPicture() != null) {
                             reversion.getPicture().delete(new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
-                                    if(e != null){
+                                    if (e != null) {
                                         e.printStackTrace();
-                                        Log.d("Reversion.submit",e.toString());
+                                        Log.d("Reversion.submit", e.toString());
                                     }
                                     final BmobFile bmobFile = new BmobFile(picture);
                                     bmobFile.upload(new UploadFileListener() {
                                         @Override
                                         public void done(BmobException e) {
-                                            if(e != null){
+                                            if (e != null) {
                                                 e.printStackTrace();
-                                                Log.d("Reversion.submit",e.toString());
+                                                Log.d("Reversion.submit", e.toString());
                                                 listener.done(e);
-                                            }else {
+                                            } else {
                                                 reversion.setPicture(bmobFile);
                                                 reversion.update(new UpdateListener() {
                                                     @Override
                                                     public void done(BmobException e) {
                                                         listener.done(e);
-                                                        if(e != null){
+                                                        if (e != null) {
                                                             e.printStackTrace();
-                                                            Log.d("Reversion.submit",e.toString());
+                                                            Log.d("Reversion.submit", e.toString());
 
                                                         }
 
@@ -163,56 +181,57 @@ public class Reversion extends BmobObject {
                                 }
                             });
                         }
-                    }else {
+                    } else {
                         reversion.update(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
                                 listener.done(e);
-                                if(e != null){
+                                if (e != null) {
                                     e.printStackTrace();
-                                    Log.d("Reversion.submit",e.toString());
+                                    Log.d("Reversion.submit", e.toString());
                                 }
 
                             }
                         });
                     }
 
-                }else {
+                } else {
                     reversion = new Reversion();
                     reversion.setContent(content);
                     reversion.setMessage(message);
                     reversion.setUser(user);
                     reversion.setFinished(true);
-                    if(picture == null){
+                    reversion.setRead(false);
+                    if (picture == null) {
                         reversion.save(new SaveListener<String>() {
                             @Override
                             public void done(String s, BmobException e) {
                                 listener.done(e);
-                                if(e != null){
+                                if (e != null) {
                                     e.printStackTrace();
-                                    Log.d("Reversion.submit","s:" + s + "; " + e.toString());
+                                    Log.d("Reversion.submit", "s:" + s + "; " + e.toString());
                                 }
 
                             }
                         });
-                    }else{
+                    } else {
                         final BmobFile bmobFile = new BmobFile(picture);
                         bmobFile.upload(new UploadFileListener() {
                             @Override
                             public void done(BmobException e) {
-                                if(e != null){
+                                if (e != null) {
                                     e.printStackTrace();
-                                    Log.d("Reversion.submit",e.toString());
+                                    Log.d("Reversion.submit", e.toString());
                                     listener.done(e);
-                                }else{
+                                } else {
                                     reversion.setPicture(bmobFile);
                                     reversion.save(new SaveListener<String>() {
                                         @Override
                                         public void done(String s, BmobException e) {
                                             listener.done(e);
-                                            if(e != null){
+                                            if (e != null) {
                                                 e.printStackTrace();
-                                                Log.d("Reversion.submit","s:" + s + "; " + e.toString());
+                                                Log.d("Reversion.submit", "s:" + s + "; " + e.toString());
                                             }
                                         }
                                     });
@@ -225,5 +244,21 @@ public class Reversion extends BmobObject {
 
             }
         });
+    }
+
+    public static void setAllRead(List<Reversion> reversions, QueryListListener listListener){
+        if(reversions == null || reversions.size() == 0)
+            return;
+        List<BmobObject> rs = new ArrayList<>();
+        for(int i = 0;i < reversions.size();i++) {
+            if(reversions.get(i).getRead() != null)
+                if(reversions.get(i).getRead())
+                    continue;
+            Reversion reversion = new Reversion();
+            reversion.setObjectId(reversions.get(i).getObjectId());
+            reversion.setRead(true);
+            rs.add(reversion);
+        }
+        new BmobBatch().updateBatch(rs).doBatch(listListener);
     }
 }

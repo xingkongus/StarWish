@@ -1,5 +1,7 @@
 package xyz.sealynn.bmobmodel.model;
 
+import android.util.Log;
+
 import java.io.File;
 
 import cn.bmob.v3.BmobUser;
@@ -115,9 +117,23 @@ public class User extends BmobUser {
      * @return
      */
     public String getNicknameOrUsername(){
+
         if(nickname != null && nickname.length() > 0)
             return nickname;
         else
             return getUsername();
+    }
+
+    /**
+     * 判断该用户是否为自己
+     * @return
+     */
+    public boolean isMe() {
+        User cu = User.getCurrentUser(this.getClass());
+        if(cu == null || cu.getObjectId() == null){
+            Log.d("isMe","unlogin!");
+            return  false;
+        }else
+            return cu.getObjectId().equals(getObjectId());
     }
 }

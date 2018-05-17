@@ -15,6 +15,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.starwishingbottle.base.BasePresenterImpl;
 import us.xingkong.starwishingbottle.module.first.FirstActivity;
 import us.xingkong.starwishingbottle.util.ActivityCollector;
+import us.xingkong.starwishingbottle.util.BmobUtil;
 import xyz.sealynn.bmobmodel.model.User;
 
 /**
@@ -34,51 +35,12 @@ class InfoPresenter extends BasePresenterImpl implements InfoContarct.Presenter 
 
     @Override
     public void changePassword(String oriPass, String newPass, String newPassRe, final View view) {
-//        User user = BmobUser.getCurrentUser(User.class);
-//        if (newPass.equals(newPassRe) && !oriPass.equals(newPass)) {
-//            user.setPassword(newPass);
-//            user.update(new UpdateListener() {
-//                @Override
-//                public void done(BmobException e) {
-//                    if (e == null) {
-//                        new MaterialDialog.Builder(mView.getContext())
-//                                .title("修改成功")
-//                                .content("密码修改成功，可以用新密码进行登录啦")
-//                                .positiveText("ok")
-//                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                                    @Override
-//                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                        dialog.dismiss();
-//                                        new MaterialDialog.Builder(mView.getContext())
-//                                                .title("重新登陆")
-//                                                .content("修改密码后需要重新登陆")
-//                                                .positiveText("ok")
-//                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                                                    @Override
-//                                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                                        User.logOut();
-//                                                        ActivityCollector.finishAll();
-//                                                        mView.getActivity().startActivity(
-//                                                                new Intent(mView.getContext(), FirstActivity.class));
-//                                                    }
-//                                                }).cancelable(false).show();
-//                                    }
-//                                }).cancelable(false).show();
-//                        Snackbar.make(view, "密码修改成功，可以用新密码进行登录啦", Snackbar.LENGTH_SHORT).show();
-//                    } else {
-//                        Snackbar.make(view, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//        }
 
         if (newPass.equals(newPassRe)) {
             User.updateCurrentUserPassword(oriPass, newPass, new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
                     if (e == null) {
-                        Snackbar.make(view, "密码修改成功，可以用新密码进行登录啦", Snackbar.LENGTH_SHORT).show();
                         new MaterialDialog.Builder(mView.getContext())
                                 .title("修改成功")
                                 .content("密码修改成功，可以用新密码进行登录啦")
@@ -94,22 +56,19 @@ class InfoPresenter extends BasePresenterImpl implements InfoContarct.Presenter 
                                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                     @Override
                                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                        User.logOut();
-                                                        ActivityCollector.finishAll();
-                                                        mView.getActivity().startActivity(
-                                                                new Intent(mView.getContext(), FirstActivity.class));
+                                                        BmobUtil.logout(mView.getActivity());
                                                     }
                                                 }).cancelable(false).show();
                                     }
                                 }).cancelable(false).show();
 
                     } else {
-                        Snackbar.make(view, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(view, "修改失败\n" + BmobUtil.getStringFromErrorCode(e), Snackbar.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 }
             });
-        }else {
+        } else {
             Snackbar.make(view, "两次密码不一致！", Snackbar.LENGTH_SHORT).show();
         }
     }

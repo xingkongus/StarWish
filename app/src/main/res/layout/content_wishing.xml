@@ -52,14 +52,14 @@
                         <android.support.v7.widget.AppCompatTextView
 
                             android:id="@+id/user"
-                            android:gravity="center|left"
+                            android:gravity="center|start"
                             android:layout_width="0dp"
                             android:layout_weight="0.7"
                             android:layout_height="match_parent"
                             android:text="User"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:gravity="right|center"
+                        android:gravity="end|center"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
                         android:layout_height="match_parent">
@@ -69,11 +69,13 @@
                             android:src="@drawable/ic_action_mood"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent" />
+
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/isprivate"
                             android:src="@drawable/ic_action_private"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6dp"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -91,7 +93,7 @@
                     android:text="Wishing..."/>
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:layout_margin="26dp"
+                    android:layout_margin="10dp"
                     android:id="@+id/picture"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
@@ -101,16 +103,15 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/date"
                     android:layout_margin="10dp"
-                    android:gravity="center|right"
+                    android:gravity="center|end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="Date"/>
 
                 <LinearLayout
-                    android:paddingRight="6dp"
-                    android:paddingBottom="6dp"
-                    android:gravity="right"
+                    android:layout_margin="6dp"
+                    android:gravity="end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <android.support.v7.widget.AppCompatButton

@@ -3,10 +3,13 @@ package xyz.sealynn.bmobmodel.model;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
@@ -66,12 +69,17 @@ public class Message extends BmobObject {
     }
 
     public static void publish(User user, File file, String content, Boolean published, final UploadFileListener listener) {
+
         final Message message = new Message();
         message.setContent(content);
         message.setUser(user);
 
         message.setPublished(published);
         if (file != null) {
+            if (file.length() > 1024 * 1024 * 8) {
+                listener.done(new BmobException("文件大小超过限制，请上传小于8M的文件"));
+                return;
+            }
             final BmobFile bmobFile = new BmobFile(file);
             bmobFile.upload(new UploadFileListener() {
                 @Override
@@ -102,5 +110,43 @@ public class Message extends BmobObject {
 
     public Boolean isFinished() {
         return (getFinished() != null && getFinished().getObjectId() != null && getFinished().getObjectId().length() > 0);
+    }
+
+    /**
+     * 统计未读评论数
+     * @param listener
+     */
+    public void countUnread(final CountListener listener){
+        BmobQuery<Reversion> query = new BmobQuery<>();
+        query.addWhereEqualTo("read",false);
+        ArrayList<Boolean> v = new ArrayList<>();
+        v.add(false);
+        v.add(null);
+        query.addWhereContainedIn("read",v);
+        query.addWhereEqualTo("message",this);
+        query.addWhereEqualTo("finished",true);
+        query.count(Reversion.class, new CountListener() {
+            @Override
+            public void done(Integer integer, BmobException e) {
+                listener.done(integer,e);
+            }
+        });
+    }
+
+    /**
+     * 统计评论数
+     * @param listener
+     */
+    public void countRev(final CountListener listener){
+        BmobQuery<Reversion> query = new BmobQuery<>();
+
+        query.addWhereEqualTo("message",this);
+        query.addWhereEqualTo("finished",true);
+        query.count(Reversion.class, new CountListener() {
+            @Override
+            public void done(Integer integer, BmobException e) {
+                listener.done(integer,e);
+            }
+        });
     }
 }

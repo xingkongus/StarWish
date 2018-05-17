@@ -113,7 +113,7 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
             @Override
             public void onClick(View v) {
                 if ((!EasyPermissions.hasPermissions(EditMsgActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     EasyPermissions.requestPermissions(EditMsgActivity.this, getString(R.string.need_permission),
                             0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
                 } else
@@ -212,6 +212,11 @@ public class EditMsgActivity extends BaseActivity<EditMsgContract.Presenter>
 
             }
         }
+    }
+
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
     }
 
     class myDialog extends AppCompatDialog {

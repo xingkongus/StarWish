@@ -51,6 +51,7 @@ import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.EditTextDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
+import us.xingkong.starwishingbottle.util.BmobUtil;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.User;
 
@@ -171,7 +172,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
             @Override
             public void onClick(View view) {
                 if ((!EasyPermissions.hasPermissions(InfoActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     EasyPermissions.requestPermissions(InfoActivity.this, getString(R.string.need_permission),
                             0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
                 } else
@@ -201,7 +202,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
                                 nickname.setText(value);
                                 Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
                             } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改失败\n" + BmobUtil.getStringFromErrorCode(e), Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -225,7 +226,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
                                 phone.setText(value);
                                 Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
                             } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改失败\n" + BmobUtil.getStringFromErrorCode(e), Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -249,7 +250,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
                                 intor.setText(value);
                                 Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
                             } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改失败\n" + BmobUtil.getStringFromErrorCode(e), Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -273,7 +274,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
                                 email.setText(value);
                                 Snackbar.make(nickname, "修改成功", Snackbar.LENGTH_SHORT).show();
                             } else {
-                                Snackbar.make(nickname, "修改失败\n" + e, Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(nickname, "修改失败\n" + BmobUtil.getStringFromErrorCode(e), Snackbar.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -393,7 +394,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
                         if (e == null) {
                             showMessage("头像更新成功");
                         } else {
-                            showMessage("头像更新失败\n" + e.toString());
+                            showMessage("头像更新失败\n" + BmobUtil.getStringFromErrorCode(e));
                         }
                         progressDialog.dismiss();
                     }
@@ -429,7 +430,7 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
                         if (e == null) {
                             showMessage("头像更新成功");
                         } else {
-                            showMessage("头像更新失败\n" + e.toString());
+                            showMessage("头像更新失败\n" + BmobUtil.getStringFromErrorCode(e));
                         }
                         progressDialog.dismiss();
                     }
@@ -524,6 +525,11 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
     }
 
     class ChangePassDialog extends AppCompatDialog {

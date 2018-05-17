@@ -3,6 +3,7 @@ package us.xingkong.starwishingbottle.module.login;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
 
 import butterknife.BindView;
@@ -22,6 +23,8 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     AppCompatEditText username;
     @BindView(R.id.et_password)
     AppCompatEditText password;
+    @BindView(R.id.back)
+    AppCompatImageButton back;
 
     @Override
     protected void initEvent(Bundle savedInstanceState) {
@@ -30,6 +33,12 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
             public void onClick(View v) {
                 mPresenter.login(username.getText().toString().trim(),
                         password.getText().toString().trim(),LoginActivity.this.getIntent().getData());
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -67,4 +76,8 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         password.setEnabled(true);
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
+    }
 }

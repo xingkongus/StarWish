@@ -81,4 +81,9 @@ public class FirstActivity extends BaseActivity<FirstContract.Presenter> impleme
     protected int bindLayout() {
         return R.layout.activity_first;
     }
+
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
+    }
 }

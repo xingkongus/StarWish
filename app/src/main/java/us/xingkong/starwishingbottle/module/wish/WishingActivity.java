@@ -41,9 +41,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobBatch;
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -52,6 +55,7 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.RecyclerAdapterOther;
+import us.xingkong.starwishingbottle.base.BaseActivity;
 import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.DoItDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
@@ -63,8 +67,8 @@ import xyz.sealynn.bmobmodel.model.Message;
 import xyz.sealynn.bmobmodel.model.Reversion;
 import xyz.sealynn.bmobmodel.model.User;
 
-public class WishingActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-
+public class WishingActivity extends BaseActivity<WishingContract.Presenter>
+        implements WishingContract.View, EasyPermissions.PermissionCallbacks {
 
     public static void showWishing(Context context, Message message, String isFinishedID) {
         Intent intent = new Intent(context, WishingActivity.class);
@@ -76,8 +80,6 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private Message message;
     private Boolean isFinished;
     private String isFinishedID;
-    private Toolbar toolbar;
-    private FloatingActionButton fab;
     private User owner, me;
     private DoItDialog doItDialog;
     private ProgressDialog progressDialog;
@@ -85,6 +87,8 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private List<Reversion> data;
     private User bestUser;
 
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     @BindView(R.id.head_image)
     AppCompatImageView headImg;
     @BindView(R.id.headPic)
@@ -131,26 +135,13 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
     private MenuItem delete;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wishing);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("愿望");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        Log.d("ctionBar", String.valueOf(actionBar == null));
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        fab = findViewById(R.id.fab);
+    protected void initEvent(Bundle savedInstanceState) {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 starOrUnstar();
             }
         });
-
-        ButterKnife.bind(this);
 
         doIt.setVisibility(View.GONE);
 
@@ -178,6 +169,30 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
 
         me = User.getCurrentUser(User.class);
 
+    }
+
+    @Override
+    protected void initViews() {
+        ActionBar actionBar = getSupportActionBar();
+        Log.d("ctionBar", String.valueOf(actionBar == null));
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    protected void prepareData() {
+
+    }
+
+    @Override
+    protected WishingContract.Presenter createPresenter() {
+        return new WishingPresenter(this);
+    }
+
+    @Override
+    protected int bindLayout() {
+        return R.layout.activity_wishing;
     }
 
     protected void init(final Message message, Exception e) {
@@ -210,6 +225,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                         Log.d("show Wishing", "User is null");
                     } else {
                         owner = user;
+
                         refresh();
                     }
                 }
@@ -279,7 +295,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
             @Override
             public void onClick(View view) {
                 if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                        && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
                             0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
                 } else {
@@ -288,7 +304,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
             }
         });
         preview.setText(message.getContent());
-        date.setText(message.getUpdatedAt());
+        date.setText(message.getCreatedAt());
 
 
         initBest();
@@ -433,6 +449,23 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                     return;
                 }
                 if (list != null && list.size() > 0) {
+                    if(message.getUser().isMe()){
+                        Reversion.setAllRead(list, new QueryListListener() {
+                            @Override
+                            public void done(List list, BmobException e) {
+                                if(e != null){
+                                    e.printStackTrace();
+                                    Log.d("setAllRead",e.toString());
+                                }
+                            }
+
+                            @Override
+                            public void done(Object o, Object o2) {
+
+                            }
+                        });
+                    }
+
                     if (isFinished) {
 
                         for (int i = 0; i < list.size(); i++) {
@@ -476,6 +509,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
                     .into(headPic);
 
         tv_user.setText(username);
+
     }
 
     protected void starOrUnstar() {
@@ -619,7 +653,7 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
             case R.id.shared:
                 if (message != null && message.getContent() != null && owner != null) {
                     if ((!EasyPermissions.hasPermissions(WishingActivity.this, Constants.PERMISSIONS_EXTERNAL_STORAGE))
-                            && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         EasyPermissions.requestPermissions(WishingActivity.this, getString(R.string.need_permission),
                                 0, Constants.PERMISSIONS_EXTERNAL_STORAGE);
                     } else
@@ -733,4 +767,8 @@ public class WishingActivity extends AppCompatActivity implements EasyPermission
         }
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return true;
+    }
 }
