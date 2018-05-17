@@ -1,5 +1,6 @@
 package us.xingkong.starwishingbottle.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,8 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -38,7 +41,7 @@ public class GlideImageLoader {
         return builder.apply(rq);
     }
 
-    public static SimpleTarget<Drawable> FitXY(final ImageView imageView,final int errorResourceID){
+    public static SimpleTarget<Drawable> FitXY(final ImageView imageView, final int errorResourceID, final Context context){
 
         return new SimpleTarget<Drawable>() {
             @Override
@@ -58,7 +61,7 @@ public class GlideImageLoader {
 
                 }catch (Throwable e){
                     e.printStackTrace();
-                    imageView.setImageResource(errorResourceID);
+                    Glide.with(context).load(resource).into(imageView);
                 }
 
             }

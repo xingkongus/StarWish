@@ -82,7 +82,7 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.blowball_dandelion_dandelion_seed_54300))
-                    .into(GlideImageLoader.FitXY(holder.picture,R.drawable.blowball_dandelion_dandelion_seed_54300));
+                    .into(GlideImageLoader.FitXY(holder.picture,R.drawable.blowball_dandelion_dandelion_seed_54300,context));
 
         BmobQuery<User> q = new BmobQuery<>();
 

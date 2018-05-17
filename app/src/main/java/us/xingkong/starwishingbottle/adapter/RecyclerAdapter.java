@@ -68,6 +68,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             Glide.with(context)
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
+                    .thumbnail(0.5f)
                     .apply(new RequestOptions().placeholder(R.drawable.blowball_dandelion_dandelion_seed_54300))
                     .into(holder.picture);
         else
@@ -91,6 +92,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         GlideImageLoader.Circle(Glide.with(context)
                                 .load(user.getAvatar().getUrl()))
                                 .transition(new DrawableTransitionOptions().crossFade())
+                                .thumbnail(0.5f)
                                 .apply(new RequestOptions().placeholder(R.drawable.ic_action_person))
                                 .into(holder.headPic);
                     else

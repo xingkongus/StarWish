@@ -9,7 +9,7 @@ public class Constants {
      *
      * release a9b0fbb67cff96d2113f9058850a5b3a
      */
-    public static final String ApplicationID = "5425615547dbb709dffc6f993f1e9877";
+    public static final String ApplicationID = "a9b0fbb67cff96d2113f9058850a5b3a";
 
     public static final String[] PERMISSIONS_EXTERNAL_STORAGE = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,

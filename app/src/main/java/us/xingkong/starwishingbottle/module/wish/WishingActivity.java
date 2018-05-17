@@ -248,7 +248,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(GlideImageLoader.FitXY(picture, R.id.action_settings));
+                    .into(GlideImageLoader.FitXY(picture, R.id.action_settings,this));
         }
         progressDialog = new ProgressDialog(WishingActivity.this);
         progressDialog.setTitle("正在提交");
@@ -350,7 +350,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     .load(reversion.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(GlideImageLoader.FitXY(pictureBest, R.id.action_settings));
+                    .into(GlideImageLoader.FitXY(pictureBest, R.id.action_settings,WishingActivity.this));
         }
         BmobQuery<User> q = new BmobQuery<>();
         q.getObject(reversion.getUser().getObjectId(), new QueryListener<User>() {
