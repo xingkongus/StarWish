@@ -10,19 +10,19 @@
     tools:showIn="@layout/activity_wishing">
 
     <LinearLayout
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             app:cardCornerRadius="5dp"
-            app:elevation="1dp"
-            android:layout_margin="6dp">
+            app:elevation="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,96 +32,100 @@
 
                 <LinearLayout
 
-                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
 
 
                     <LinearLayout
                         android:id="@+id/part_user"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5">
+
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/headPic"
-                            android:src="@drawable/ic_action_person"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
-                            android:layout_weight="0.3"/>
+                            android:layout_weight="0.3"
+                            android:src="@drawable/ic_action_person" />
 
                         <android.support.v7.widget.AppCompatTextView
 
                             android:id="@+id/user"
-                            android:gravity="center|start"
                             android:layout_width="0dp"
-                            android:layout_weight="0.7"
                             android:layout_height="match_parent"
-                            android:text="User"/>
+                            android:layout_weight="0.7"
+                            android:gravity="center|start"
+                            android:text="User" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:gravity="end|center"
                         android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.5"
-                        android:layout_height="match_parent">
+                        android:gravity="end|center">
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/isfinisher"
-                            android:src="@drawable/ic_action_mood"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_action_mood" />
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/isprivate"
-                            android:src="@drawable/ic_action_private"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="6dp"/>
+                            android:layout_marginStart="6dp"
+                            android:src="@drawable/ic_action_private" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <android.support.v7.widget.AppCompatTextView
 
+                    android:id="@+id/preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:id="@+id/preview"
-                    android:textSize="20sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:text="Wishing..."
                     android:textColor="@color/cardview_dark_background"
-                    android:text="Wishing..."/>
+                    android:textSize="20sp" />
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:layout_margin="10dp"
                     android:id="@+id/picture"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:transitionName="@string/translate" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/date"
-                    android:layout_margin="10dp"
-                    android:gravity="center|end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center|end"
                     android:singleLine="true"
-                    android:text="Date"/>
+                    android:text="Date" />
 
                 <LinearLayout
-                    android:layout_margin="6dp"
-                    android:gravity="end"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:gravity="end">
+
                     <android.support.v7.widget.AppCompatButton
-                        android:visibility="invisible"
                         android:id="@+id/do_it"
-                        android:textColor="@color/light"
-                        android:backgroundTint="@color/colorPrimary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/do_it"/>
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/do_it"
+                        android:textColor="@color/light"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -130,10 +134,9 @@
         </android.support.v7.widget.CardView>
 
 
-        <include layout="@layout/content_wishing_ex"/>
+        <include layout="@layout/content_wishing_ex" />
 
     </LinearLayout>
-
 
 
 </android.support.v4.widget.NestedScrollView>

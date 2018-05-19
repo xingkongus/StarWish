@@ -12,14 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,9 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import cn.bmob.v3.BmobBatch;
-import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
@@ -53,6 +50,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
+import us.xingkong.starwishingbottle.module.browse.BrowseActivity;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.adapter.RecyclerAdapterOther;
 import us.xingkong.starwishingbottle.base.BaseActivity;
@@ -60,7 +58,6 @@ import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.dialog.DoItDialog;
 import us.xingkong.starwishingbottle.dialog.GetPictureDialog;
 import us.xingkong.starwishingbottle.dialog.ShareDIalog;
-import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
 import xyz.sealynn.bmobmodel.model.Message;
@@ -174,7 +171,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
     @Override
     protected void initViews() {
         ActionBar actionBar = getSupportActionBar();
-        Log.d("ctionBar", String.valueOf(actionBar == null));
+        Log.d("actionBar", String.valueOf(actionBar == null));
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -248,8 +245,22 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(GlideImageLoader.FitXY(picture, R.id.action_settings,this));
+                    .listener(GlideImageLoader.setRequestListener(picture))
+                    //.into(GlideImageLoader.FitXY(picture, R.id.action_settings,this));
+                    .into(picture);
         }
+
+        picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WishingActivity.this, BrowseActivity.class);
+                intent.putExtra("Url", message.getPicture().getUrl());
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(WishingActivity.this, picture, getString(R.string.translate));
+                ActivityCompat.startActivity(WishingActivity.this, intent, options.toBundle());
+            }
+        });
+
         progressDialog = new ProgressDialog(WishingActivity.this);
         progressDialog.setTitle("正在提交");
         progressDialog.setMessage("请稍等…");
@@ -350,7 +361,9 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     .load(reversion.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.ic_action_picture).error(R.drawable.ic_action_picture))
-                    .into(GlideImageLoader.FitXY(pictureBest, R.id.action_settings,WishingActivity.this));
+                    .listener(GlideImageLoader.setRequestListener(pictureBest))
+                    //.into(GlideImageLoader.FitXY(pictureBest, R.id.action_settings, WishingActivity.this));
+                    .into(pictureBest);
         }
         BmobQuery<User> q = new BmobQuery<>();
         q.getObject(reversion.getUser().getObjectId(), new QueryListener<User>() {
@@ -449,13 +462,13 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                     return;
                 }
                 if (list != null && list.size() > 0) {
-                    if(message.getUser().isMe()){
+                    if (message.getUser().isMe()) {
                         Reversion.setAllRead(list, new QueryListListener() {
                             @Override
                             public void done(List list, BmobException e) {
-                                if(e != null){
+                                if (e != null) {
                                     e.printStackTrace();
-                                    Log.d("setAllRead",e.toString());
+                                    Log.d("setAllRead", e.toString());
                                 }
                             }
 
@@ -663,21 +676,21 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                 }
                 break;
             case R.id.delete:
-                if (owner != null && me != null){
-                    if(owner.getObjectId().equals(me.getObjectId())){
-                        if(isFinished){
+                if (owner != null && me != null) {
+                    if (owner.getObjectId().equals(me.getObjectId())) {
+                        if (isFinished) {
                             Snackbar.make(findViewById(android.R.id.content), "无法删除该愿望，因为它已被实现", Snackbar.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             showDeleteDialog(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     message.delete(new UpdateListener() {
                                         @Override
                                         public void done(BmobException e) {
-                                            if(e != null) {
+                                            if (e != null) {
                                                 Snackbar.make(findViewById(android.R.id.content), "无法删除该愿望\n" + e.toString(), Snackbar.LENGTH_SHORT).show();
                                             } else {
-                                                Snackbar.make(findViewById(android.R.id.content), "删除成功" , Snackbar.LENGTH_SHORT).show();
+                                                Snackbar.make(findViewById(android.R.id.content), "删除成功", Snackbar.LENGTH_SHORT).show();
                                                 WishingActivity.this.finish();
                                             }
 
@@ -686,11 +699,11 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
                                 }
                             });
                         }
-                    }else{
+                    } else {
                         Snackbar.make(findViewById(android.R.id.content), "无法删除该愿望，因为它不是你的", Snackbar.LENGTH_SHORT).show();
 
                     }
-                }else{
+                } else {
                     Snackbar.make(findViewById(android.R.id.content), "正在载入，请稍后再试", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
@@ -698,7 +711,7 @@ public class WishingActivity extends BaseActivity<WishingContract.Presenter>
         return true;
     }
 
-    private void showDeleteDialog(final View.OnClickListener delete){
+    private void showDeleteDialog(final View.OnClickListener delete) {
         new MaterialDialog.Builder(WishingActivity.this)
                 .title("确定删除吗？")
                 .content("删除愿望后大家就不能帮你实现咯")

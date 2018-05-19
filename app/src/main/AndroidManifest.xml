@@ -18,28 +18,29 @@
     <!-- if you want to load images from a file OR from the internet -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
 
 
     <application
-        android:largeHeap="true"
         android:name=".WishingBottleApplication"
         android:allowBackup="true"
         android:icon="@drawable/circle_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@drawable/circle_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="${applicationId}.fileProvider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/provider_paths"/>-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="${applicationId}.fileProvider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/provider_paths"/>-->
         <!--</provider>-->
 
         <activity
@@ -79,22 +80,31 @@
         <activity
             android:name=".module.setting.SettingActivity"
             android:theme="@style/MainActivityTheme" />
-        <activity android:name=".module.info.InfoActivity"
-            android:theme="@style/AppTheme.Full"/>
+        <activity
+            android:name=".module.info.InfoActivity"
+            android:theme="@style/AppTheme.Full" />
         <activity
             android:name=".module.wish.WishingActivity"
             android:label="@string/title_activity_wishing"
             android:theme="@style/MainActivityTheme" />
-        <activity android:name=".module.about.AboutActivity"
-            android:theme="@style/AppTheme.About"/>
+        <activity
+            android:name=".module.about.AboutActivity"
+            android:theme="@style/AppTheme.About" />
         <!--<activity-->
-            <!--android:name="com.tencent.bugly.beta.ui.BetaActivity"-->
-            <!--android:configChanges="keyboardHidden|orientation|screenSize|locale"-->
-            <!--android:theme="@android:style/Theme.Translucent" />-->
+        <!--android:name="com.tencent.bugly.beta.ui.BetaActivity"-->
+        <!--android:configChanges="keyboardHidden|orientation|screenSize|locale"-->
+        <!--android:theme="@android:style/Theme.Translucent" />-->
         <activity
             android:name="com.hentaiuncle.qrcodemaker.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme" />
+        <activity android:name=".module.browse.BrowseActivity" >
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
     </application>
 
 </manifest>

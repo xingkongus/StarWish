@@ -104,6 +104,9 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
     private User user;
     private String id;
     private Boolean isCurrentUser;
+    public static final int ALBUM_REQUEST = 1;
+    public static final int CAMERA_REQUEST = 2;
+    public static final int CROP_REQUEST = 0;
 
     @Override
     protected void initEvent(Bundle savedInstanceState) {
@@ -321,12 +324,33 @@ public class InfoActivity extends BaseActivity<InfoContarct.Presenter>
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                overridePendingTransition(0, R.anim.activity_exit);
                 break;
             case R.id.change_password:
                 new ChangePassDialog(InfoActivity.this).show();
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(0, R.anim.activity_exit);
+    }
+
+    /**
+     * 尝试做个裁剪头像的功能，但是失败了
+     * @param uri
+     */
+    private void clipAvatar(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        startActivityForResult(intent, CROP_REQUEST);
     }
 
     protected void changeAvatar(User user) {

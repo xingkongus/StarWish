@@ -1,7 +1,11 @@
 package us.xingkong.starwishingbottle.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -22,11 +26,10 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
+import us.xingkong.starwishingbottle.module.browse.BrowseActivity;
 import us.xingkong.starwishingbottle.R;
 import us.xingkong.starwishingbottle.module.info.InfoActivity;
-import us.xingkong.starwishingbottle.module.wish.WishingActivity;
 import us.xingkong.starwishingbottle.util.GlideImageLoader;
-import xyz.sealynn.bmobmodel.model.Message;
 import xyz.sealynn.bmobmodel.model.Reversion;
 import xyz.sealynn.bmobmodel.model.User;
 
@@ -47,7 +50,7 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
         this.reversions = reversions;
     }
 
-    public RecyclerAdapterOther(List<Reversion> reversions, Context context,Like like) {
+    public RecyclerAdapterOther(List<Reversion> reversions, Context context, Like like) {
         this.reversions = reversions;
         this.context = context;
         this.like = like;
@@ -62,12 +65,12 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder,final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Reversion message = reversions.get(position);
 
-        if(like.shouldShowLike(position)){
+        if (like.shouldShowLike(position)) {
             holder.like.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.like.setVisibility(View.GONE);
         }
         holder.like.setOnClickListener(new View.OnClickListener() {
@@ -82,17 +85,20 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
                     .load(message.getPicture().getUrl())
                     .transition(new DrawableTransitionOptions().crossFade())
                     .apply(new RequestOptions().placeholder(R.drawable.blowball_dandelion_dandelion_seed_54300))
-                    .into(GlideImageLoader.FitXY(holder.picture,R.drawable.blowball_dandelion_dandelion_seed_54300,context));
+                    .listener(GlideImageLoader.setRequestListener(holder.picture))
+                    //.into(GlideImageLoader.FitXY(holder.picture,R.drawable.blowball_dandelion_dandelion_seed_54300,context));
+                    .into(holder.picture);
+
 
         BmobQuery<User> q = new BmobQuery<>();
 
         q.getObject(message.getUser().getObjectId(), new QueryListener<User>() {
             @Override
             public void done(User user, BmobException e) {
-                if(e != null){
+                if (e != null) {
                     e.printStackTrace();
-                    Log.d(this.toString(),e.toString());
-                }else{
+                    Log.d(this.toString(), e.toString());
+                } else {
                     holder.user.setText(user.getNicknameOrUsername());
 
                     if (user != null && user.getAvatar() != null && user.getAvatar().getUrl() != null)
@@ -112,12 +118,12 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
 
 
         holder.date.setText(message.getUpdatedAt());
-        holder.userinfo.setOnClickListener(new View.OnClickListener() {
+        /*holder.userinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoActivity.showUserInfo(context,message.getUser());
+                InfoActivity.showUserInfo(context, message.getUser());
             }
-        });
+        });*/
 
 //        holder.cardView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -125,6 +131,25 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
 //                WishingActivity.showWishing(context,message,(message.isFinished()));
 //            }
 //        });
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InfoActivity.showUserInfo(context, message.getUser());
+            }
+        });
+
+        holder.picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, BrowseActivity.class);
+                intent.putExtra("Url", message.getPicture().getUrl());
+                String name = context.getString(R.string.translate);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) context, holder.picture, name);
+                ActivityCompat.startActivity(context, intent, options.toBundle());
+            }
+        });
 
     }
 
@@ -136,8 +161,8 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
     class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
-        AppCompatImageView picture,headPic;
-        AppCompatTextView preview,user,date;
+        AppCompatImageView picture, headPic;
+        AppCompatTextView preview, user, date;
         LinearLayout userinfo;
         AppCompatButton like;
 
@@ -159,6 +184,7 @@ public class RecyclerAdapterOther extends RecyclerView.Adapter<RecyclerAdapterOt
 
     public interface Like {
         void iLikeIt(int position);
+
         boolean shouldShowLike(int position);
     }
 }
