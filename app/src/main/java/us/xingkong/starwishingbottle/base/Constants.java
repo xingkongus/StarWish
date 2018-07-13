@@ -24,5 +24,5 @@ public class Constants {
      *
      * release 04f8e0c1f5
      */
-    public static final String APP_ID = "51357a5c53";
+    public static final String APP_ID = "04f8e0c1f5";
 }

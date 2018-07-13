@@ -34,6 +34,7 @@ import us.xingkong.starwishingbottle.base.Constants;
 import us.xingkong.starwishingbottle.module.editmsg.EditMsgActivity;
 import us.xingkong.starwishingbottle.module.setting.SettingActivity;
 import us.xingkong.starwishingbottle.module.wish.WishingActivity;
+import us.xingkong.starwishingbottle.util.BmobUtil;
 import xyz.sealynn.bmobmodel.model.Message;
 
 public class MainActivity extends BaseActivity<MainContract.Presenter>
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
                     if(e != null){
                         e.printStackTrace();
                         Log.d("DoUri",e.toString());
-                        Toast.makeText(MainActivity.this,"Uri错误\n" + e.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,"Uri错误\n" + BmobUtil.getStringFromErrorCode(e),Toast.LENGTH_SHORT).show();
                     }else if(message ==null){
                         Log.d("DoUri","message is null!");
                         Toast.makeText(MainActivity.this,"载入愿望出错啦",Toast.LENGTH_SHORT).show();
@@ -151,7 +152,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
      * 以下是关于EasyPermissions对权限的操作
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         // Forward results to EasyPermissions
